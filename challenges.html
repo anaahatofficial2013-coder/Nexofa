@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoSphere - Green Challenges</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    /* ==================== CHALLENGES PAGE ==================== */
+    .challenges-hero {
+      padding: 48px 40px 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .challenges-hero .section-badge {
+      margin-bottom: 12px;
+    }
+
+    .challenges-hero h1 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .challenges-hero p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ==================== USER STATS BAR ==================== */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: 1280px;
+      margin: 32px auto 0;
+      padding: 0 40px;
+    }
+
+    .stat-mini {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all var(--transition);
+    }
+
+    .stat-mini:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(16,185,129,0.3);
+    }
+
+    .stat-mini-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .stat-mini-icon.xp { background: rgba(16,185,129,0.12); }
+    .stat-mini-icon.streak { background: rgba(255,107,107,0.12); }
+    .stat-mini-icon.completed { background: rgba(167,139,250,0.12); }
+    .stat-mini-icon.badges { background: rgba(253,203,110,0.12); }
+
+    .stat-mini-info {
+      flex: 1;
+    }
+
+    .stat-mini-value {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .stat-mini-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    /* ==================== TABS & PANELS ==================== */
+    .challenges-layout {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 40px 64px;
+    }
+
+    .tabs-wrapper {
+      margin-bottom: 32px;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active-tab {
+      display: block;
+    }
+
+    /* ==================== CHALLENGE CARDS ==================== */
+    .challenge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .challenge-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .challenge-grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .challenge-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      backdrop-filter: blur(10px);
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .challenge-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-1);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .challenge-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(16,185,129,0.3);
+    }
+
+    .challenge-card:hover::before {
+      opacity: 1;
+    }
+
+    .challenge-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .challenge-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .challenge-description {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .challenge-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .difficulty-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .difficulty-easy {
+      background: rgba(16,185,129,0.15);
+      color: #10b981;
+    }
+
+    .difficulty-medium {
+      background: rgba(253,203,110,0.15);
+      color: #f39c12;
+    }
+
+    .difficulty-hard {
+      background: rgba(231,76,60,0.15);
+      color: #e74c3c;
+    }
+
+    .xp-reward {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(167,139,250,0.12);
+      color: var(--accent);
+    }
+
+    .challenge-progress {
+      margin-bottom: 16px;
+    }
+
+    .challenge-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .challenge-progress-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .challenge-progress-pct {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-family: var(--font-display);
+    }
+
+    .challenge-progress .progress-bar {
+      height: 6px;
+    }
+
+    .challenge-btn {
+      width: 100%;
+      padding: 12px 20px;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .challenge-btn-start {
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(16,185,129,0.3);
+    }
+
+    .challenge-btn-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(16,185,129,0.4);
+    }
+
+    .challenge-btn-continue {
+      background: rgba(16,185,129,0.1);
+      color: var(--primary);
+      border: 1px solid rgba(16,185,129,0.3);
+    }
+
+    .challenge-btn-continue:hover {
+      background: rgba(16,185,129,0.18);
+      border-color: var(--primary);
+    }
+
+    .challenge-btn-completed {
+      background: rgba(16,185,129,0.08);
+      color: var(--primary);
+      border: 1px solid rgba(16,185,129,0.2);
+      cursor: default;
+    }
+
+    .challenge-card.completed-card {
+      opacity: 0.7;
+    }
+
+    .challenge-card.completed-card:hover {
+      opacity: 1;
+    }
+
+    .completed-checkmark {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      background: rgba(16,185,129,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    /* ==================== WEEKLY CHALLENGE CARDS (larger) ==================== */
+    .weekly-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      backdrop-filter: blur(10px);
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .weekly-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-1);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .weekly-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(16,185,129,0.3);
+    }
+
+    .weekly-card:hover::before {
+      opacity: 1;
+    }
+
+    .weekly-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .weekly-card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      background: rgba(16,185,129,0.1);
+    }
+
+    .weekly-card-info {
+      flex: 1;
+    }
+
+    .weekly-card-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .weekly-card-description {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .weekly-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .weekly-card-progress {
+      margin-bottom: 20px;
+    }
+
+    .weekly-card .challenge-btn {
+      padding: 14px 24px;
+    }
+
+    /* ==================== MONTHLY FEATURED CARDS ==================== */
+    .monthly-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      backdrop-filter: blur(10px);
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .monthly-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(135deg, #a78bfa, #a29bfe);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .monthly-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(167,139,250,0.3);
+    }
+
+    .monthly-card:hover::before {
+      opacity: 1;
+    }
+
+    .monthly-card-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, rgba(167,139,250,0.15), rgba(167,139,250,0.1));
+    }
+
+    .monthly-card-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .monthly-card-description {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .monthly-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .monthly-card .challenge-progress {
+      max-width: 320px;
+      margin: 0 auto 24px;
+    }
+
+    /* ==================== COMPLETED PANEL ==================== */
+    .completed-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .completed-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all var(--transition);
+    }
+
+    .completed-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .completed-item-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      background: rgba(16,185,129,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      animation: checkPop 0.5s ease-out;
+    }
+
+    @keyframes checkPop {
+      0% { transform: scale(0); }
+      60% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .completed-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .completed-item-title {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .completed-item-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .completed-item-xp {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .completed-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .completed-empty-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    /* ==================== STREAK COUNTER ==================== */
+    .streak-section {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px 48px;
+    }
+
+    .streak-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+    }
+
+    .streak-main {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .streak-flame {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(255,107,107,0.15), rgba(255,165,0,0.1));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      position: relative;
+      animation: flameFlicker 1.5s ease-in-out infinite;
+    }
+
+    @keyframes flameFlicker {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25% { transform: scale(1.05) rotate(-2deg); }
+      50% { transform: scale(1.08) rotate(0deg); }
+      75% { transform: scale(1.05) rotate(2deg); }
+    }
+
+    .streak-flame-glow {
+      position: absolute;
+      inset: -4px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(255,107,107,0.2), rgba(255,165,0,0.15));
+      filter: blur(12px);
+      z-index: -1;
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .streak-info {
+      text-align: left;
+    }
+
+    .streak-count {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .streak-label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    .streak-divider {
+      width: 1px;
+      height: 60px;
+      background: var(--border-color);
+    }
+
+    .streak-best {
+      text-align: center;
+    }
+
+    .streak-best-value {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .streak-best-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .streak-days {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .streak-day {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border: 2px solid var(--border-color);
+      color: var(--text-muted);
+      transition: all var(--transition);
+    }
+
+    .streak-day.active {
+      background: var(--gradient-1);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .streak-day.today {
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 0 12px rgba(16,185,129,0.3);
+    }
+
+    /* ==================== BADGES SECTION ==================== */
+    .badges-section {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 40px 64px;
+    }
+
+    .badges-section-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .badges-section-header h2 {
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+    }
+
+    .badges-section-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .badge-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px 16px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+      transition: all var(--transition);
+    }
+
+    .badge-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(16,185,129,0.3);
+    }
+
+    .badge-item.earned {
+      border-color: rgba(16,185,129,0.3);
+    }
+
+    .badge-item.locked {
+      opacity: 0.5;
+    }
+
+    .badge-circle {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 14px;
+      position: relative;
+    }
+
+    .badge-item.earned .badge-circle {
+      background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.1));
+      border: 2px solid rgba(16,185,129,0.3);
+    }
+
+    .badge-item.locked .badge-circle {
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      filter: grayscale(1);
+    }
+
+    .badge-earned-check {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 22px;
+      height: 22px;
+      border-radius: var(--radius-full);
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      border: 2px solid var(--bg-primary);
+      animation: checkPop 0.5s ease-out;
+    }
+
+    .badge-title {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .badge-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .badge-item.earned .badge-status {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 1024px) {
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .challenge-grid,
+      .challenge-grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .completed-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .badges-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .streak-card {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .streak-divider {
+        width: 60px;
+        height: 1px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .challenges-hero {
+        padding: 36px 20px 16px;
+      }
+
+      .challenges-hero h1 {
+        font-size: 1.6rem;
+      }
+
+      .challenges-layout {
+        padding: 24px 20px 48px;
+      }
+
+      .stats-bar {
+        grid-template-columns: 1fr 1fr;
+        padding: 0 20px;
+        gap: 12px;
+      }
+
+      .stat-mini {
+        padding: 14px;
+      }
+
+      .stat-mini-value {
+        font-size: 1.2rem;
+      }
+
+      .challenge-grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .completed-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .badges-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .streak-section,
+      .badges-section {
+        padding: 0 20px 48px;
+      }
+
+      .streak-days {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .badges-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .badge-item {
+        padding: 20px 12px;
+      }
+
+      .badge-circle {
+        width: 56px;
+        height: 56px;
+        font-size: 1.4rem;
+      }
+    }
+
+    /* ==================== ANIMATIONS ==================== */
+    @keyframes slideInCard {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .challenge-card,
+    .weekly-card,
+    .monthly-card {
+      animation: slideInCard 0.5s ease-out forwards;
+    }
+
+    .challenge-card:nth-child(1) { animation-delay: 0s; }
+    .challenge-card:nth-child(2) { animation-delay: 0.08s; }
+    .challenge-card:nth-child(3) { animation-delay: 0.16s; }
+    .challenge-card:nth-child(4) { animation-delay: 0.24s; }
+
+    .weekly-card:nth-child(1) { animation-delay: 0s; }
+    .weekly-card:nth-child(2) { animation-delay: 0.1s; }
+    .weekly-card:nth-child(3) { animation-delay: 0.2s; }
+
+    .completed-item {
+      animation: slideInCard 0.4s ease-out forwards;
+    }
+
+    .badge-item {
+      animation: slideInCard 0.4s ease-out forwards;
+    }
+
+    .badge-item:nth-child(1) { animation-delay: 0s; }
+    .badge-item:nth-child(2) { animation-delay: 0.05s; }
+    .badge-item:nth-child(3) { animation-delay: 0.1s; }
+    .badge-item:nth-child(4) { animation-delay: 0.15s; }
+    .badge-item:nth-child(5) { animation-delay: 0.2s; }
+    .badge-item:nth-child(6) { animation-delay: 0.25s; }
+    .badge-item:nth-child(7) { animation-delay: 0.3s; }
+    .badge-item:nth-child(8) { animation-delay: 0.35s; }
+  </style>
+</head>
+<body>
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-icon">🌿</div>EcoSphere</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="calculator.html">Track</a></li>
+      <li><a href="challenges.html" class="active">Challenges</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="learn.html">Learn</a></li>
+      <li><a href="events.html">Events</a></li>
+    </ul>
+    <div class="nav-right"><button class="theme-toggle" id="themeToggle">☀️</button><a href="profile.html" class="nav-profile">AS</a></div>
+    <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-content">
+
+    <!-- Page Header -->
+    <div class="challenges-hero animate-in bloom-page-hero">
+      <div class="bloom-page-video-bg"><img src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="Challenges Hero" /></div>
+      <div class="section-badge">🏆 Challenges</div>
+      <h1>Green Challenges 🏆</h1>
+      <p>Gamify your sustainability journey</p>
+    </div>
+
+    <!-- User Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-mini animate-in animate-in-delay-1">
+        <div class="stat-mini-icon xp">⭐</div>
+        <div class="stat-mini-info">
+          <div class="stat-mini-value" data-count="2450">2,450</div>
+          <div class="stat-mini-label">Total XP</div>
+        </div>
+      </div>
+      <div class="stat-mini animate-in animate-in-delay-2">
+        <div class="stat-mini-icon streak">🔥</div>
+        <div class="stat-mini-info">
+          <div class="stat-mini-value">7 days</div>
+          <div class="stat-mini-label">Current Streak 🔥</div>
+        </div>
+      </div>
+      <div class="stat-mini animate-in animate-in-delay-3">
+        <div class="stat-mini-icon completed">✅</div>
+        <div class="stat-mini-info">
+          <div class="stat-mini-value" data-count="24">24</div>
+          <div class="stat-mini-label">Completed</div>
+        </div>
+      </div>
+      <div class="stat-mini animate-in animate-in-delay-4">
+        <div class="stat-mini-icon badges">🏅</div>
+        <div class="stat-mini-info">
+          <div class="stat-mini-value" data-count="8">8</div>
+          <div class="stat-mini-label">Badges</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Navigation & Content -->
+    <div class="challenges-layout">
+
+      <!-- Tabs -->
+      <div class="tabs-wrapper">
+        <div class="tabs" data-tabs-group="challenges">
+          <button class="tab-btn active" data-tab="daily">Daily</button>
+          <button class="tab-btn" data-tab="weekly">Weekly</button>
+          <button class="tab-btn" data-tab="monthly">Monthly</button>
+          <button class="tab-btn" data-tab="completed">Completed</button>
+        </div>
+      </div>
+
+      <!-- ==================== DAILY CHALLENGES ==================== -->
+      <div class="tab-panel active-tab" data-tab-content="daily" data-tabs-group="challenges">
+        <div class="challenge-grid">
+
+          <!-- No Single-Use Plastic -->
+          <div class="challenge-card animate-on-scroll">
+            <div class="challenge-card-header">
+              <div>
+                <div class="challenge-title">No Single-Use Plastic</div>
+                <div class="challenge-description">Go an entire day without using any single-use plastic items. Carry your own bags, bottles, and containers.</div>
+              </div>
+              <div class="completed-checkmark" style="background:rgba(16,185,129,0.12);color:#10b981;">✓</div>
+            </div>
+            <div class="challenge-meta">
+              <span class="difficulty-badge difficulty-easy">Easy</span>
+              <span class="xp-reward">+50 XP</span>
+            </div>
+            <div class="challenge-progress">
+              <div class="challenge-progress-header">
+                <span class="challenge-progress-label">Progress</span>
+                <span class="challenge-progress-pct">100%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" data-progress="100" style="width:100%;"></div>
+              </div>
+            </div>
+            <button class="challenge-btn challenge-btn-completed">Completed ✓</button>
+          </div>
+
+          <!-- Walk 5km Today -->
+          <div class="challenge-card animate-on-scroll">
+            <div class="challenge-card-header">
+              <div>
+                <div class="challenge-title">Walk 5km Today</div>
+                <div class="challenge-description">Walk at least 5 kilometers today instead of using motorized transport. Track your route and distance.</div>
+              </div>
+            </div>
+            <div class="challenge-meta">
+              <span class="difficulty-badge difficulty-medium">Medium</span>
+              <span class="xp-reward">+80 XP</span>
+            </div>
+            <div class="challenge-progress">
+              <div class="challenge-progress-header">
+                <span class="challenge-progress-label">Progress</span>
+                <span class="challenge-progress-pct">60%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" data-progress="60" style="width:0%;"></div>
+              </div>
+            </div>
+            <button class="challenge-btn challenge-btn-continue" onclick="handleChallengeAction(this, 'Walk 5km Today')">Continue</button>
+          </div>
+
+          <!-- 5-Min Shower -->
+          <div class="challenge-card animate-on-scroll">
+            <div class="challenge-card-header">
+              <div>
+                <div class="challenge-title">5-Min Shower</div>
+                <div class="challenge-description">Limit your shower to just 5 minutes today. Save water and reduce your energy consumption.</div>
+              </div>
+              <div class="completed-checkmark" style="background:rgba(16,185,129,0.12);color:#10b981;">✓</div>
+            </div>
+            <div class="challenge-meta">
+              <span class="difficulty-badge difficulty-easy">Easy</span>
+              <span class="xp-reward">+30 XP</span>
+            </div>
+            <div class="challenge-progress">
+              <div class="challenge-progress-header">
+                <span class="challenge-progress-label">Progress</span>
+                <span class="challenge-progress-pct">100%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" data-progress="100" style="width:100%;"></div>
+              </div>
+            </div>
+            <button class="challenge-btn challenge-btn-completed">Completed ✓</button>
+          </div>
+
+          <!-- Meatless Meals -->
+          <div class="challenge-card animate-on-scroll">
+            <div class="challenge-card-header">
+              <div>
+                <div class="challenge-title">Meatless Meals</div>
+                <div class="challenge-description">Eat only plant-based meals for the entire day. Reduce your carbon footprint through mindful eating.</div>
+              </div>
+            </div>
+            <div class="challenge-meta">
+              <span class="difficulty-badge difficulty-medium">Medium</span>
+              <span class="xp-reward">+70 XP</span>
+            </div>
+            <div class="challenge-progress">
+              <div class="challenge-progress-header">
+                <span class="challenge-progress-label">Progress</span>
+                <span class="challenge-progress-pct">30%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" data-progress="30" style="width:0%;"></div>
+              </div>
+            </div>
+            <button class="challenge-btn challenge-btn-continue" onclick="handleChallengeAction(this, 'Meatless Meals')">Continue</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ==================== WEEKLY CHALLENGES ==================== -->
+      <div class="tab-panel" data-tab-content="weekly" data-tabs-group="challenges">
+        <div class="challenge-grid challenge-grid-3">
+
+          <!-- Green Commute Week -->
+          <div class="weekly-card">
+            <div class="weekly-card-header">
+              <div class="weekly-card-icon">🚲</div>
+              <div class="weekly-card-info">
+                <div class="weekly-card-title">Green Commute Week</div>
+                <div class="weekly-card-description">Use only eco-friendly transportation for your daily commute all week. Walk, cycle, or take public transit.</div>
+              </div>
+            </div>
+            <div class="weekly-card-meta">
+              <span class="difficulty-badge difficulty-hard">Hard</span>
+              <span class="xp-reward">+200 XP</span>
+            </div>
+            <div class="weekly-card-progress">
+              <div class="challenge-progress">
+                <div class="challenge-progress-header">
+                  <span class="challenge-progress-label">Progress</span>
+                  <span class="challenge-progress-pct">45%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-progress="45" style="width:0%;"></div>
+                </div>
+              </div>
+            </div>
+            <button class="challenge-btn challenge-btn-continue" onclick="handleChallengeAction(this, 'Green Commute Week')">Continue</button>
+          </div>
+
+          <!-- Zero Waste Week -->
+          <div class="weekly-card">
+            <div class="weekly-card-header">
+              <div class="weekly-card-icon">♻️</div>
+              <div class="weekly-card-info">
+                <div class="weekly-card-title">Zero Waste Week</div>
+                <div class="weekly-card-description">Produce zero landfill waste for an entire week. Compost, recycle, and refuse disposable items.</div>
+              </div>
+            </div>
+            <div class="weekly-card-meta">
+              <span class="difficulty-badge difficulty-hard">Hard</span>
+              <span class="xp-reward">+300 XP</span>
+            </div>
+            <div class="weekly-card-progress">
+              <div class="challenge-progress">
+                <div class="challenge-progress-header">
+                  <span class="challenge-progress-label">Progress</span>
+                  <span class="challenge-progress-pct">20%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-progress="20" style="width:0%;"></div>
+                </div>
+              </div>
+            </div>
+            <button class="challenge-btn challenge-btn-continue" onclick="handleChallengeAction(this, 'Zero Waste Week')">Continue</button>
+          </div>
+
+          <!-- Energy Saver Week -->
+          <div class="weekly-card">
+            <div class="weekly-card-header">
+              <div class="weekly-card-icon">💡</div>
+              <div class="weekly-card-info">
+                <div class="weekly-card-title">Energy Saver Week</div>
+                <div class="weekly-card-description">Reduce your household energy usage by 30% this week. Turn off lights, unplug devices, and use natural light.</div>
+              </div>
+            </div>
+            <div class="weekly-card-meta">
+              <span class="difficulty-badge difficulty-medium">Medium</span>
+              <span class="xp-reward">+150 XP</span>
+            </div>
+            <div class="weekly-card-progress">
+              <div class="challenge-progress">
+                <div class="challenge-progress-header">
+                  <span class="challenge-progress-label">Progress</span>
+                  <span class="challenge-progress-pct">65%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" data-progress="65" style="width:0%;"></div>
+                </div>
+              </div>
+            </div>
+            <button class="challenge-btn challenge-btn-continue" onclick="handleChallengeAction(this, 'Energy Saver Week')">Continue</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ==================== MONTHLY CHALLENGES ==================== -->
+      <div class="tab-panel" data-tab-content="monthly" data-tabs-group="challenges">
+        <div class="challenge-grid challenge-grid-2">
+
+          <!-- 30-Day Eco Challenge -->
+          <div class="monthly-card">
+            <div class="monthly-card-icon">🌍</div>
+            <div class="monthly-card-title">30-Day Eco Challenge</div>
+            <div class="monthly-card-description">Complete 30 consecutive days of eco-friendly actions. Build lasting sustainable habits that transform your lifestyle.</div>
+            <div class="monthly-card-meta">
+              <span class="difficulty-badge difficulty-hard">Hard</span>
+              <span class="xp-reward">+500 XP</span>
+            </div>
+            <div class="challenge-progress">
+              <div class="challenge-progress-header">
+                <span class="challenge-progress-label">Progress</span>
+                <span class="challenge-progress-pct">70%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" data-progress="70" style="width:0%;"></div>
+              </div>
+            </div>
+            <button class="challenge-btn challenge-btn-continue" onclick="handleChallengeAction(this, '30-Day Eco Challenge')">Continue</button>
+          </div>
+
+          <!-- Community Clean-Up Month -->
+          <div class="monthly-card">
+            <div class="monthly-card-icon">🧹</div>
+            <div class="monthly-card-title">Community Clean-Up Month</div>
+            <div class="monthly-card-description">Organize or participate in at least 4 community clean-up events this month. Make your neighborhood greener together.</div>
+            <div class="monthly-card-meta">
+              <span class="difficulty-badge difficulty-medium">Medium</span>
+              <span class="xp-reward">+400 XP</span>
+            </div>
+            <div class="challenge-progress">
+              <div class="challenge-progress-header">
+                <span class="challenge-progress-label">Progress</span>
+                <span class="challenge-progress-pct">50%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" data-progress="50" style="width:0%;"></div>
+              </div>
+            </div>
+            <button class="challenge-btn challenge-btn-continue" onclick="handleChallengeAction(this, 'Community Clean-Up Month')">Continue</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ==================== COMPLETED CHALLENGES ==================== -->
+      <div class="tab-panel" data-tab-content="completed" data-tabs-group="challenges">
+        <div class="completed-grid">
+
+          <div class="completed-item">
+            <div class="completed-item-icon">✅</div>
+            <div class="completed-item-info">
+              <div class="completed-item-title">No Single-Use Plastic</div>
+              <div class="completed-item-meta">
+                <span class="completed-item-xp">+50 XP</span>
+                <span>•</span>
+                <span>Aug 18, 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="completed-item">
+            <div class="completed-item-icon">✅</div>
+            <div class="completed-item-info">
+              <div class="completed-item-title">5-Min Shower</div>
+              <div class="completed-item-meta">
+                <span class="completed-item-xp">+30 XP</span>
+                <span>•</span>
+                <span>Aug 17, 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="completed-item">
+            <div class="completed-item-icon">✅</div>
+            <div class="completed-item-info">
+              <div class="completed-item-title">Plant a Tree</div>
+              <div class="completed-item-meta">
+                <span class="completed-item-xp">+100 XP</span>
+                <span>•</span>
+                <span>Aug 15, 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="completed-item">
+            <div class="completed-item-icon">✅</div>
+            <div class="completed-item-info">
+              <div class="completed-item-title">Bike to Work</div>
+              <div class="completed-item-meta">
+                <span class="completed-item-xp">+80 XP</span>
+                <span>•</span>
+                <span>Aug 14, 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="completed-item">
+            <div class="completed-item-icon">✅</div>
+            <div class="completed-item-info">
+              <div class="completed-item-title">Zero Waste Day</div>
+              <div class="completed-item-meta">
+                <span class="completed-item-xp">+60 XP</span>
+                <span>•</span>
+                <span>Aug 12, 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="completed-item">
+            <div class="completed-item-icon">✅</div>
+            <div class="completed-item-info">
+              <div class="completed-item-title">Reusable Bottle Challenge</div>
+              <div class="completed-item-meta">
+                <span class="completed-item-xp">+40 XP</span>
+                <span>•</span>
+                <span>Aug 10, 2026</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== STREAK COUNTER ==================== -->
+  <section class="streak-section">
+    <div class="streak-card animate-in">
+      <div class="streak-main">
+        <div class="streak-flame">
+          <div class="streak-flame-glow"></div>
+          🔥
+        </div>
+        <div class="streak-info">
+          <div class="streak-count">7 Days</div>
+          <div class="streak-label">Current Streak</div>
+          <div class="streak-days">
+            <div class="streak-day active">M</div>
+            <div class="streak-day active">T</div>
+            <div class="streak-day active">W</div>
+            <div class="streak-day active">T</div>
+            <div class="streak-day active">F</div>
+            <div class="streak-day active">S</div>
+            <div class="streak-day today">S</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="streak-divider"></div>
+
+      <div class="streak-best">
+        <div class="streak-best-value">12 Days</div>
+        <div class="streak-best-label">Best Streak</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ACHIEVEMENT BADGES ==================== -->
+  <section class="badges-section">
+    <div class="badges-section-header animate-in">
+      <h2>Achievement Badges</h2>
+      <p>Collect badges by completing challenges and reaching milestones</p>
+    </div>
+    <div class="badges-grid">
+
+      <div class="badge-item earned">
+        <div class="badge-circle">
+          🎯
+          <div class="badge-earned-check">✓</div>
+        </div>
+        <div class="badge-title">First Challenge</div>
+        <div class="badge-status">Earned</div>
+      </div>
+
+      <div class="badge-item earned">
+        <div class="badge-circle">
+          🔥
+          <div class="badge-earned-check">✓</div>
+        </div>
+        <div class="badge-title">7-Day Streak</div>
+        <div class="badge-status">Earned</div>
+      </div>
+
+      <div class="badge-item earned">
+        <div class="badge-circle">
+          🛡️
+          <div class="badge-earned-check">✓</div>
+        </div>
+        <div class="badge-title">Eco Warrior</div>
+        <div class="badge-status">Earned</div>
+      </div>
+
+      <div class="badge-item earned">
+        <div class="badge-circle">
+          🚫
+          <div class="badge-earned-check">✓</div>
+        </div>
+        <div class="badge-title">Plastic Free Hero</div>
+        <div class="badge-status">Earned</div>
+      </div>
+
+      <div class="badge-item earned">
+        <div class="badge-circle">
+          💧
+          <div class="badge-earned-check">✓</div>
+        </div>
+        <div class="badge-title">Water Champion</div>
+        <div class="badge-status">Earned</div>
+      </div>
+
+      <div class="badge-item earned">
+        <div class="badge-circle">
+          ⚡
+          <div class="badge-earned-check">✓</div>
+        </div>
+        <div class="badge-title">Energy Expert</div>
+        <div class="badge-status">Earned</div>
+      </div>
+
+      <div class="badge-item earned">
+        <div class="badge-circle">
+          ♻️
+          <div class="badge-earned-check">✓</div>
+        </div>
+        <div class="badge-title">Recycling Pro</div>
+        <div class="badge-status">Earned</div>
+      </div>
+
+      <div class="badge-item earned">
+        <div class="badge-circle">
+          ⭐
+          <div class="badge-earned-check">✓</div>
+        </div>
+        <div class="badge-title">Community Star</div>
+        <div class="badge-status">Earned</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="nav-logo"><div class="nav-logo-icon">🌿</div>EcoSphere</div><p>Empowering students and communities to understand and improve their environmental impact.</p></div>
+      <div class="footer-col"><h4>Platform</h4><a href="dashboard.html">Dashboard</a><a href="calculator.html">Carbon Calculator</a><a href="challenges.html">Challenges</a><a href="marketplace.html">Marketplace</a></div>
+      <div class="footer-col"><h4>Community</h4><a href="community.html">Feed</a><a href="leaderboard.html">Leaderboard</a><a href="events.html">Events</a><a href="learn.html">Learning Hub</a></div>
+      <div class="footer-col"><h4>Company</h4><a href="about.html">About</a><a href="impact.html">Impact Reports</a><a href="profile.html">Profile</a><a href="#">Privacy Policy</a></div>
+    </div>
+    <div class="footer-bottom"><span>&copy; 2026 EcoSphere. All rights reserved.</span><span>Built with 💚 for TechManthan</span></div>
+  </footer>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script src="scripts/main.js"></script>
+  <script>
+    // ==================== CHALLENGE BUTTON INTERACTION ====================
+    function handleChallengeAction(btn, challengeName) {
+      var card = btn.closest('.challenge-card, .weekly-card, .monthly-card');
+      var progressFill = card ? card.querySelector('.progress-fill') : null;
+      var progressPct = card ? card.querySelector('.challenge-progress-pct') : null;
+
+      if (btn.classList.contains('challenge-btn-start')) {
+        btn.classList.remove('challenge-btn-start');
+        btn.classList.add('challenge-btn-continue');
+        btn.textContent = 'Continue';
+        if (progressFill) {
+          progressFill.style.width = '10%';
+          progressFill.setAttribute('data-progress', '10');
+        }
+        if (progressPct) progressPct.textContent = '10%';
+        showToast('Challenge started: ' + challengeName + '!');
+        return;
+      }
+
+      if (btn.classList.contains('challenge-btn-continue')) {
+        var currentPct = parseInt(progressFill ? progressFill.getAttribute('data-progress') : '0');
+        var newPct = Math.min(currentPct + 20, 100);
+
+        if (progressFill) {
+          progressFill.setAttribute('data-progress', newPct);
+          progressFill.style.width = newPct + '%';
+        }
+        if (progressPct) progressPct.textContent = newPct + '%';
+
+        if (newPct >= 100) {
+          btn.classList.remove('challenge-btn-continue');
+          btn.classList.add('challenge-btn-completed');
+          btn.textContent = 'Completed ✓';
+          btn.onclick = null;
+          btn.style.cursor = 'default';
+
+          if (card) {
+            card.classList.add('completed-card');
+            var header = card.querySelector('.challenge-card-header, .weekly-card-header, .monthly-card-icon');
+            if (header) {
+              var check = document.createElement('div');
+              check.className = 'completed-checkmark';
+              check.textContent = '✓';
+              if (header.classList.contains('challenge-card-header')) {
+                header.appendChild(check);
+              }
+            }
+          }
+          showToast('Congratulations! Challenge completed: ' + challengeName + ' 🎉');
+        } else {
+          showToast('Progress updated: ' + newPct + '% complete');
+        }
+      }
+    }
+
+    // ==================== INIT PROGRESS BARS FOR CHALLENGES ====================
+    function initChallengeProgressBars() {
+      var bars = document.querySelectorAll('.challenge-card .progress-fill, .weekly-card .progress-fill, .monthly-card .progress-fill');
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var bar = entry.target;
+            var target = bar.getAttribute('data-progress');
+            if (target) {
+              setTimeout(function() {
+                bar.style.width = target + '%';
+              }, 300);
+            }
+            observer.unobserve(bar);
+          }
+        });
+      }, { threshold: 0.3 });
+      bars.forEach(function(b) { observer.observe(b); });
+    }
+
+    // ==================== INIT ====================
+    document.addEventListener('DOMContentLoaded', function() {
+      initChallengeProgressBars();
+
+      // Ensure first tab panel is visible
+      var firstPanel = document.querySelector('[data-tab-content="daily"]');
+      if (firstPanel) {
+        firstPanel.style.display = 'block';
+        firstPanel.classList.add('active-tab');
+      }
+    });
+  </script>
+</body>
+</html>

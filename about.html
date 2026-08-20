@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — EcoSphere</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    /* ─── About Page Variables ─── */
+    :root {
+      --ab-hero-bg: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      --ab-accent: #34d399;
+      --ab-accent-dim: rgba(6,182,212,.12);
+      --ab-card-bg: #ffffff;
+      --ab-card-border: rgba(0,0,0,.06);
+      --ab-card-shadow: 0 4px 24px rgba(0,0,0,.06);
+      --ab-card-shadow-hover: 0 8px 40px rgba(0,0,0,.10);
+      --ab-text: #1e293b;
+      --ab-text-muted: #64748b;
+      --ab-section-gap: 100px;
+      --ab-radius: 16px;
+      --ab-radius-sm: 12px;
+      --ab-transition: .3s cubic-bezier(.4,0,.2,1);
+    }
+
+    html[data-theme="dark"] {
+      --ab-card-bg: #1e293b;
+      --ab-card-border: rgba(255,255,255,.06);
+      --ab-card-shadow: 0 4px 24px rgba(0,0,0,.3);
+      --ab-card-shadow-hover: 0 8px 40px rgba(0,0,0,.45);
+      --ab-text: #f1f5f9;
+      --ab-text-muted: #94a3b8;
+    }
+
+    /* ─── Reset & Global ─── */
+    .about-page { font-family: 'Inter', system-ui, -apple-system, sans-serif; color: var(--ab-text); line-height: 1.6; }
+    .about-page * { margin: 0; padding: 0; box-sizing: border-box; }
+    .about-page a { text-decoration: none; color: inherit; }
+
+    /* ─── Hero ─── */
+    .ab-hero {
+      background: var(--ab-hero-bg);
+      padding: 140px 24px 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .ab-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(6,182,212,.15) 0%, transparent 60%),
+                  radial-gradient(circle at 70% 80%, rgba(56,189,248,.10) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .ab-hero h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .ab-hero p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: rgba(255,255,255,.75);
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* ─── Section Wrapper ─── */
+    .ab-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--ab-section-gap) 24px 0;
+    }
+    .ab-section-label {
+      display: inline-block;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ab-accent);
+      background: var(--ab-accent-dim);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .ab-section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--ab-text);
+    }
+    .ab-section-sub {
+      font-size: 1.05rem;
+      color: var(--ab-text-muted);
+      max-width: 600px;
+      margin-bottom: 48px;
+    }
+
+    /* ─── Mission & Vision ─── */
+    .ab-mv-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+    .ab-mv-card {
+      background: var(--ab-card-bg);
+      border: 1px solid var(--ab-card-border);
+      border-radius: var(--ab-radius);
+      padding: 40px 36px;
+      box-shadow: var(--ab-card-shadow);
+      transition: transform var(--ab-transition), box-shadow var(--ab-transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .ab-mv-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--ab-card-shadow-hover);
+    }
+    .ab-mv-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .ab-mv-card.mission::before { background: linear-gradient(90deg, #34d399, #06b6d4); }
+    .ab-mv-card.vision::before { background: linear-gradient(90deg, #818cf8, #c084fc); }
+    .ab-mv-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+    .ab-mv-card.mission .ab-mv-icon { background: linear-gradient(135deg, rgba(6,182,212,.15), rgba(6,182,212,.15)); }
+    .ab-mv-card.vision .ab-mv-icon  { background: linear-gradient(135deg, rgba(129,140,248,.15), rgba(192,132,252,.15)); }
+    .ab-mv-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; }
+    .ab-mv-card p  { color: var(--ab-text-muted); font-size: .97rem; line-height: 1.7; }
+
+    /* ─── Sustainability Stats ─── */
+    .ab-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+    }
+    .ab-stat-card {
+      background: var(--ab-card-bg);
+      border: 1px solid var(--ab-card-border);
+      border-radius: var(--ab-radius);
+      padding: 32px 28px;
+      box-shadow: var(--ab-card-shadow);
+      transition: transform var(--ab-transition), box-shadow var(--ab-transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .ab-stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--ab-card-shadow-hover);
+    }
+    .ab-stat-card .stat-emoji {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .ab-stat-card .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .ab-stat-card .stat-label {
+      font-weight: 700;
+      font-size: .95rem;
+      margin-bottom: 6px;
+    }
+    .ab-stat-card .stat-desc {
+      color: var(--ab-text-muted);
+      font-size: .88rem;
+      line-height: 1.6;
+    }
+    .ab-stat-card:nth-child(1) .stat-value { color: #ef4444; }
+    .ab-stat-card:nth-child(2) .stat-value { color: #f59e0b; }
+    .ab-stat-card:nth-child(3) .stat-value { color: #3b82f6; }
+    .ab-stat-card:nth-child(4) .stat-value { color: #22c55e; }
+
+    /* ─── Timeline ─── */
+    .ab-timeline {
+      position: relative;
+      padding-left: 32px;
+      max-width: 800px;
+    }
+    .ab-timeline::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, var(--ab-accent), #818cf8, #c084fc);
+      border-radius: 3px;
+    }
+    .ab-tl-item {
+      position: relative;
+      padding: 0 0 48px 40px;
+    }
+    .ab-tl-item:last-child { padding-bottom: 0; }
+    .ab-tl-dot {
+      position: absolute;
+      left: -21px;
+      top: 4px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--ab-accent);
+      border: 3px solid var(--ab-card-bg);
+      box-shadow: 0 0 0 3px var(--ab-accent);
+      z-index: 1;
+    }
+    .ab-tl-year {
+      display: inline-block;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: var(--ab-accent-dim);
+      color: var(--ab-accent);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .ab-tl-item h4 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .ab-tl-item p {
+      color: var(--ab-text-muted);
+      font-size: .93rem;
+      line-height: 1.6;
+    }
+
+    /* ─── Team ─── */
+    .ab-team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .ab-team-card {
+      background: var(--ab-card-bg);
+      border: 1px solid var(--ab-card-border);
+      border-radius: var(--ab-radius);
+      padding: 32px 28px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      box-shadow: var(--ab-card-shadow);
+      transition: transform var(--ab-transition), box-shadow var(--ab-transition);
+    }
+    .ab-team-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--ab-card-shadow-hover);
+    }
+    .ab-avatar {
+      width: 56px; height: 56px;
+      min-width: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .ab-team-card:nth-child(1) .ab-avatar { background: linear-gradient(135deg, #34d399, #06b6d4); }
+    .ab-team-card:nth-child(2) .ab-avatar { background: linear-gradient(135deg, #818cf8, #c084fc); }
+    .ab-team-card:nth-child(3) .ab-avatar { background: linear-gradient(135deg, #f472b6, #fb923c); }
+    .ab-team-card:nth-child(4) .ab-avatar { background: linear-gradient(135deg, #facc15, #fb923c); }
+    .ab-team-card:nth-child(5) .ab-avatar { background: linear-gradient(135deg, #38bdf8, #818cf8); }
+    .ab-team-card:nth-child(6) .ab-avatar { background: linear-gradient(135deg, #4ade80, #a78bfa); }
+    .ab-team-info h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 2px; }
+    .ab-team-info .ab-role {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--ab-accent);
+      margin-bottom: 8px;
+    }
+    .ab-team-info p {
+      color: var(--ab-text-muted);
+      font-size: .88rem;
+      line-height: 1.6;
+    }
+
+    /* ─── Core Values ─── */
+    .ab-values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+    .ab-value-card {
+      background: var(--ab-card-bg);
+      border: 1px solid var(--ab-card-border);
+      border-radius: var(--ab-radius);
+      padding: 36px 28px;
+      text-align: center;
+      box-shadow: var(--ab-card-shadow);
+      transition: transform var(--ab-transition), box-shadow var(--ab-transition);
+    }
+    .ab-value-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--ab-card-shadow-hover);
+    }
+    .ab-value-icon {
+      width: 64px; height: 64px;
+      margin: 0 auto 16px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+    }
+    .ab-value-card:nth-child(1) .ab-value-icon { background: linear-gradient(135deg, rgba(6,182,212,.15), rgba(6,182,212,.15)); }
+    .ab-value-card:nth-child(2) .ab-value-icon { background: linear-gradient(135deg, rgba(244,114,182,.15), rgba(251,146,60,.15)); }
+    .ab-value-card:nth-child(3) .ab-value-icon { background: linear-gradient(135deg, rgba(129,140,248,.15), rgba(192,132,252,.15)); }
+    .ab-value-card:nth-child(4) .ab-value-icon { background: linear-gradient(135deg, rgba(250,204,21,.15), rgba(251,146,60,.15)); }
+    .ab-value-card h4 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .ab-value-card p {
+      color: var(--ab-text-muted);
+      font-size: .9rem;
+      line-height: 1.65;
+    }
+
+    /* ─── Global Impact ─── */
+    .ab-impact {
+      background: var(--ab-hero-bg);
+      border-radius: var(--ab-radius);
+      padding: 64px 40px;
+      margin-top: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .ab-impact::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 40%, rgba(6,182,212,.12) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 60%, rgba(129,140,248,.10) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .ab-impact .ab-section-label { position: relative; }
+    .ab-impact .ab-section-title { color: #fff; position: relative; }
+    .ab-impact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 32px;
+      position: relative;
+      margin-top: 12px;
+    }
+    .ab-impact-item { text-align: center; }
+    .ab-impact-num {
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      font-weight: 800;
+      color: var(--ab-accent);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .ab-impact-label {
+      font-size: .95rem;
+      color: rgba(255,255,255,.7);
+      font-weight: 500;
+    }
+
+    /* ─── CTA ─── */
+    .ab-cta {
+      text-align: center;
+      padding: 80px 24px 120px;
+      position: relative;
+    }
+    .ab-cta h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .ab-cta p {
+      color: var(--ab-text-muted);
+      max-width: 520px;
+      margin: 0 auto 32px;
+      font-size: 1.05rem;
+    }
+    .ab-cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .ab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: transform var(--ab-transition), box-shadow var(--ab-transition);
+    }
+    .ab-btn:hover { transform: translateY(-2px); }
+    .ab-btn-primary {
+      background: linear-gradient(135deg, #34d399, #06b6d4);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(6,182,212,.3);
+    }
+    .ab-btn-primary:hover { box-shadow: 0 6px 28px rgba(6,182,212,.45); }
+    .ab-btn-secondary {
+      background: var(--ab-card-bg);
+      color: var(--ab-text);
+      border: 1px solid var(--ab-card-border);
+      box-shadow: var(--ab-card-shadow);
+    }
+
+    /* ─── Animations ─── */
+    .ab-fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+    }
+    .ab-fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      .ab-hero { padding: 120px 20px 70px; }
+      .ab-section { padding: 60px 20px 0; }
+      .ab-mv-grid, .ab-team-grid, .ab-values-grid, .ab-stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .ab-impact { padding: 40px 24px; }
+      .ab-impact-grid { grid-template-columns: repeat(2, 1fr); }
+      .ab-timeline { padding-left: 24px; }
+      .ab-tl-item { padding-left: 32px; }
+    }
+    @media (max-width: 480px) {
+      .ab-impact-grid { grid-template-columns: 1fr; gap: 24px; }
+      .ab-team-card { flex-direction: column; align-items: center; text-align: center; }
+    }
+  </style>
+</head>
+<body class="about-page">
+
+  <!-- ════════════ NAVBAR ════════════ -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">🌿</div>
+      EcoSphere
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="calculator.html">Track</a></li>
+      <li><a href="challenges.html">Challenges</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="learn.html">Learn</a></li>
+      <li><a href="events.html">Events</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle">☀️</button>
+      <a href="profile.html" class="nav-profile">AS</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ════════════ MAIN ════════════ -->
+  <main class="main-content">
+
+    <!-- ─── 1. HERO ─── -->
+    <section class="ab-hero bloom-page-hero">
+      <div class="bloom-page-video-bg"><img src="https://images.pexels.com/photos/4503819/pexels-photo-4503819.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="About Hero" /></div>
+      <h1>About EcoSphere</h1>
+      <p>We're building the platform that makes environmental action accessible, measurable, and rewarding for everyone.</p>
+    </section>
+
+    <!-- ─── 2. MISSION & VISION ─── -->
+    <section class="ab-section">
+      <span class="ab-section-label">What Drives Us</span>
+      <h2 class="ab-section-title">Mission & Vision</h2>
+      <p class="ab-section-sub">Two beliefs that shape every feature we build and every decision we make.</p>
+      <div class="ab-mv-grid">
+        <div class="ab-mv-card mission ab-fade-in">
+          <div class="ab-mv-icon">🎯</div>
+          <h3>Our Mission</h3>
+          <p>To empower individuals, students, and communities with the tools, knowledge, and motivation they need to understand their environmental footprint and take meaningful action — turning awareness into measurable impact every single day.</p>
+        </div>
+        <div class="ab-mv-card vision ab-fade-in">
+          <div class="ab-mv-icon">🔭</div>
+          <h3>Our Vision</h3>
+          <p>A world where every person understands their environmental impact, where sustainability is a shared habit — not a privilege, and where data-driven decisions drive a collective movement toward a healthier, greener planet for future generations.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 3. WHY SUSTAINABILITY MATTERS ─── -->
+    <section class="ab-section">
+      <span class="ab-section-label">The Urgency</span>
+      <h2 class="ab-section-title">Why Sustainability Matters</h2>
+      <p class="ab-section-sub">The environmental crisis isn't a distant threat — it's here, and the numbers speak for themselves.</p>
+      <div class="ab-stats-grid">
+        <div class="ab-stat-card ab-fade-in">
+          <span class="stat-emoji">🌡️</span>
+          <div class="stat-value">+1.2 °C</div>
+          <div class="stat-label">Global Temperature Rise</div>
+          <p class="stat-desc">Average global temperature has already risen 1.2 °C above pre-industrial levels, accelerating extreme weather events worldwide.</p>
+        </div>
+        <div class="ab-stat-card ab-fade-in">
+          <span class="stat-emoji">🧴</span>
+          <div class="stat-value">11M Tons</div>
+          <div class="stat-label">Plastic Entering Oceans</div>
+          <p class="stat-desc">Over 11 million metric tons of plastic waste flow into our oceans every year, devastating marine ecosystems and entering our food chain.</p>
+        </div>
+        <div class="ab-stat-card ab-fade-in">
+          <span class="stat-emoji">💧</span>
+          <div class="stat-value">2.2B People</div>
+          <div class="stat-label">Lack Safe Water Access</div>
+          <p class="stat-desc">Nearly two-thirds of the world's population experiences severe water scarcity for at least one month per year, a figure projected to worsen.</p>
+        </div>
+        <div class="ab-stat-card ab-fade-in">
+          <span class="stat-emoji">🌳</span>
+          <div class="stat-value">10M Hectares</div>
+          <div class="stat-label">Forest Lost Annually</div>
+          <p class="stat-desc">We lose roughly 10 million hectares of forest each year — an area the size of Iceland — destroying biodiversity and carbon sinks.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 4. TIMELINE ─── -->
+    <section class="ab-section">
+      <span class="ab-section-label">Our Journey</span>
+      <h2 class="ab-section-title">EcoSphere Through the Years</h2>
+      <p class="ab-section-sub">From a small idea to a global movement — here's how we got here.</p>
+      <div class="ab-timeline">
+        <div class="ab-tl-item ab-fade-in">
+          <div class="ab-tl-dot"></div>
+          <span class="ab-tl-year">2024</span>
+          <h4>Founded</h4>
+          <p>EcoSphere was born out of a university hackathon — a shared frustration that no simple tool existed for students to track and reduce their personal carbon footprint.</p>
+        </div>
+        <div class="ab-tl-item ab-fade-in">
+          <div class="ab-tl-dot"></div>
+          <span class="ab-tl-year">2025</span>
+          <h4>Beta Launch</h4>
+          <p>After months of research and development, we launched our closed beta to 500 university students, introducing the carbon calculator, challenges, and gamified rewards.</p>
+        </div>
+        <div class="ab-tl-item ab-fade-in">
+          <div class="ab-tl-dot"></div>
+          <span class="ab-tl-year">2025</span>
+          <h4>10,000 Users</h4>
+          <p>Word spread quickly. Within six months of beta, we crossed 10,000 active users across 15 countries, proving the appetite for accessible sustainability tools.</p>
+        </div>
+        <div class="ab-tl-item ab-fade-in">
+          <div class="ab-tl-dot"></div>
+          <span class="ab-tl-year">2026</span>
+          <h4>Global Expansion</h4>
+          <p>EcoSphere officially launches worldwide — partnering with universities, NGOs, and corporations to bring intelligent environmental tracking to communities everywhere.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 5. TEAM ─── -->
+    <section class="ab-section">
+      <span class="ab-section-label">Our People</span>
+      <h2 class="ab-section-title">Meet the Team</h2>
+      <p class="ab-section-sub">A passionate group of engineers, designers, and sustainability advocates building the future of environmental action.</p>
+      <div class="ab-team-grid">
+        <div class="ab-team-card ab-fade-in">
+          <div class="ab-avatar">AM</div>
+          <div class="ab-team-info">
+            <h4>Arjun Mehta</h4>
+            <span class="ab-role">CEO & Co-Founder</span>
+            <p>Former climate researcher turned entrepreneur. Arjun leads EcoSphere's strategy and vision with a deep belief that technology can democratize sustainability.</p>
+          </div>
+        </div>
+        <div class="ab-team-card ab-fade-in">
+          <div class="ab-avatar">PS</div>
+          <div class="ab-team-info">
+            <h4>Priya Sharma</h4>
+            <span class="ab-role">CTO & Co-Founder</span>
+            <p>Full-stack engineer with a passion for scalable systems. Priya architects EcoSphere's platform and leads the engineering team with relentless focus on performance.</p>
+          </div>
+        </div>
+        <div class="ab-team-card ab-fade-in">
+          <div class="ab-avatar">RV</div>
+          <div class="ab-team-info">
+            <h4>Rohan Verma</h4>
+            <span class="ab-role">Head of Design</span>
+            <p>A design thinker who believes great UX is a form of advocacy. Rohan shapes every screen, interaction, and visual language to make sustainability feel effortless.</p>
+          </div>
+        </div>
+        <div class="ab-team-card ab-fade-in">
+          <div class="ab-avatar">AP</div>
+          <div class="ab-team-info">
+            <h4>Ananya Patel</h4>
+            <span class="ab-role">Sustainability Lead</span>
+            <p>Environmental scientist and policy advisor. Ananya ensures every metric, recommendation, and challenge on EcoSphere is grounded in peer-reviewed research.</p>
+          </div>
+        </div>
+        <div class="ab-team-card ab-fade-in">
+          <div class="ab-avatar">KN</div>
+          <div class="ab-team-info">
+            <h4>Kavya Nair</h4>
+            <span class="ab-role">Software Engineer</span>
+            <p>Backend specialist who thrives on solving complex data problems. Kavya builds the algorithms that power EcoSphere's carbon tracking and analytics engine.</p>
+          </div>
+        </div>
+        <div class="ab-team-card ab-fade-in">
+          <div class="ab-avatar">VS</div>
+          <div class="ab-team-info">
+            <h4>Vikram Singh</h4>
+            <span class="ab-role">Community Manager</span>
+            <p>The heart of EcoSphere's growing community. Vikram connects with users, runs challenges, and ensures every voice is heard in our mission for a greener world.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 6. CORE VALUES ─── -->
+    <section class="ab-section">
+      <span class="ab-section-label">What We Stand For</span>
+      <h2 class="ab-section-title">Core Values</h2>
+      <p class="ab-section-sub">The principles that guide our product, our culture, and our community.</p>
+      <div class="ab-values-grid">
+        <div class="ab-value-card ab-fade-in">
+          <div class="ab-value-icon">💡</div>
+          <h4>Innovation</h4>
+          <p>We push boundaries with data-driven tools and intelligent features that make sustainability not just possible, but genuinely exciting to pursue.</p>
+        </div>
+        <div class="ab-value-card ab-fade-in">
+          <div class="ab-value-icon">🤝</div>
+          <h4>Community</h4>
+          <p>We believe collective action outperforms individual effort. Every feature is designed to connect, inspire, and amplify the impact of people working together.</p>
+        </div>
+        <div class="ab-value-card ab-fade-in">
+          <div class="ab-value-icon">🌍</div>
+          <h4>Impact</h4>
+          <p>We measure success not in downloads or engagement, but in real-world outcomes — tons of CO₂ saved, liters of water conserved, and habits permanently changed.</p>
+        </div>
+        <div class="ab-value-card ab-fade-in">
+          <div class="ab-value-icon">🔍</div>
+          <h4>Transparency</h4>
+          <p>We publish our methodologies, open-source our data models, and hold ourselves accountable. Trust is earned through radical openness.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 7. GLOBAL IMPACT ─── -->
+    <section class="ab-section">
+      <div class="ab-impact">
+        <span class="ab-section-label">By the Numbers</span>
+        <h2 class="ab-section-title">Global Impact</h2>
+        <div class="ab-impact-grid">
+          <div class="ab-impact-item ab-fade-in">
+            <div class="ab-impact-num" data-target="50000" data-suffix="+">0</div>
+            <div class="ab-impact-label">Active Users</div>
+          </div>
+          <div class="ab-impact-item ab-fade-in">
+            <div class="ab-impact-num" data-target="120" data-suffix="+">0</div>
+            <div class="ab-impact-label">Countries Reached</div>
+          </div>
+          <div class="ab-impact-item ab-fade-in">
+            <div class="ab-impact-num" data-target="1000000" data-suffix="+">0</div>
+            <div class="ab-impact-label">Actions Taken</div>
+          </div>
+          <div class="ab-impact-item ab-fade-in">
+            <div class="ab-impact-num" data-target="150" data-suffix="+">0</div>
+            <div class="ab-impact-label">Partnerships</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 8. CTA ─── -->
+    <section class="ab-cta">
+      <h2>Ready to Make a Difference?</h2>
+      <p>Join thousands of people already reducing their environmental footprint. Your journey toward a greener life starts with a single step.</p>
+      <div class="ab-cta-buttons">
+        <a href="dashboard.html" class="ab-btn ab-btn-primary">Get Started Free 🚀</a>
+        <a href="community.html" class="ab-btn ab-btn-secondary">Join the Community</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ════════════ FOOTER ════════════ -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo"><div class="nav-logo-icon">🌿</div>EcoSphere</div>
+        <p>Empowering students and communities to understand and improve their environmental impact through intelligent tracking and gamification.</p>
+      </div>
+      <div class="footer-col"><h4>Platform</h4><a href="dashboard.html">Dashboard</a><a href="calculator.html">Carbon Calculator</a><a href="challenges.html">Challenges</a><a href="marketplace.html">Marketplace</a></div>
+      <div class="footer-col"><h4>Community</h4><a href="community.html">Feed</a><a href="leaderboard.html">Leaderboard</a><a href="events.html">Events</a><a href="learn.html">Learning Hub</a></div>
+      <div class="footer-col"><h4>Company</h4><a href="about.html">About</a><a href="impact.html">Impact Reports</a><a href="profile.html">Profile</a><a href="#">Privacy Policy</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 EcoSphere. All rights reserved.</span>
+      <span>Built with 💚 for TechManthan</span>
+    </div>
+  </footer>
+
+  <!-- ════════════ SCRIPTS ════════════ -->
+  <script src="scripts/main.js"></script>
+  <script>
+    (function () {
+      /* ─── Intersection Observer: Fade-in ─── */
+      const faders = document.querySelectorAll('.ab-fade-in');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      faders.forEach(el => observer.observe(el));
+
+      /* ─── Animated Counters ─── */
+      const counters = document.querySelectorAll('.ab-impact-num[data-target]');
+      let countersAnimated = false;
+
+      function formatNumber(n) {
+        if (n >= 1000000) return (n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1).replace(/\.0$/, '') + 'M';
+        if (n >= 1000)    return (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1).replace(/\.0$/, '') + 'K';
+        return n.toString();
+      }
+
+      function animateCounters() {
+        counters.forEach(counter => {
+          const target = parseInt(counter.getAttribute('data-target'), 10);
+          const suffix = counter.getAttribute('data-suffix') || '';
+          const duration = 2200;
+          const startTime = performance.now();
+
+          function tick(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 4);
+            const current = Math.floor(eased * target);
+            counter.textContent = formatNumber(current) + suffix;
+            if (progress < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        });
+      }
+
+      const impactSection = document.querySelector('.ab-impact');
+      if (impactSection) {
+        const impactObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !countersAnimated) {
+              countersAnimated = true;
+              animateCounters();
+              impactObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.3 });
+        impactObserver.observe(impactSection);
+      }
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impact Reports — EcoSphere</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .impact-header {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+      background: linear-gradient(135deg, rgba(34,197,94,0.12) 0%, rgba(6,182,212,0.12) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .impact-header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+    }
+    .impact-header p {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+    }
+
+    .period-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 2rem 2rem 0;
+      flex-wrap: wrap;
+    }
+    .period-tabs .tab-btn {
+      padding: 0.65rem 1.5rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .period-tabs .tab-btn.active,
+    .period-tabs .tab-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    .impact-section {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+    .section-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+    .section-title {
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+    }
+
+    .stat-cards-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .impact-stat-card {
+      border-radius: 1rem;
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .impact-stat-card .stat-icon {
+      font-size: 2.4rem;
+      margin-bottom: 0.7rem;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2));
+    }
+    .impact-stat-card .stat-value {
+      font-size: 2.6rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .impact-stat-card .stat-label {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin-top: 0.4rem;
+    }
+    .impact-stat-card::after {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -30%;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+    }
+    .impact-stat-card::before {
+      content: '';
+      position: absolute;
+      bottom: -50%;
+      left: -20%;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+    }
+    .impact-stat-card.carbon { background: linear-gradient(135deg, #22c55e, #16a34a); }
+    .impact-stat-card.water { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .impact-stat-card.waste { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+    .impact-stat-card.energy { background: linear-gradient(135deg, #a855f7, #7c3aed); }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.8rem;
+    }
+    .chart-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+    .chart-card canvas {
+      width: 100% !important;
+      height: 260px !important;
+    }
+
+    .score-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .score-canvas-wrap {
+      position: relative;
+      width: 220px;
+      height: 220px;
+    }
+    .score-canvas-wrap canvas {
+      width: 100%;
+      height: 100%;
+    }
+    .score-center-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .score-center-text .score-number {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .score-center-text .score-of {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    .score-details {
+      max-width: 320px;
+    }
+    .score-details h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.6rem;
+    }
+    .score-details p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .score-breakdown-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.92rem;
+    }
+    .score-breakdown-item:last-child { border: none; }
+    .score-breakdown-item .label { color: var(--text-secondary); }
+    .score-breakdown-item .bar-wrap {
+      width: 120px;
+      height: 6px;
+      background: var(--bg);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-left: 1rem;
+    }
+    .score-breakdown-item .bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--accent);
+      transition: width 1.2s ease;
+    }
+
+    .community-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .community-stat {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .community-stat .cs-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    .community-stat .cs-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .community-stat .cs-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+
+    .comparison-chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.8rem;
+      margin-bottom: 2.5rem;
+    }
+    .comparison-chart-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 1rem;
+    }
+    .comparison-bar-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .comparison-bar-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .comparison-bar-item .cb-label {
+      width: 140px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .comparison-bar-item .cb-track {
+      flex: 1;
+      height: 22px;
+      background: var(--bg);
+      border-radius: 11px;
+      overflow: hidden;
+      position: relative;
+    }
+    .comparison-bar-item .cb-fill {
+      height: 100%;
+      border-radius: 11px;
+      transition: width 1.2s ease;
+      position: relative;
+    }
+    .comparison-bar-item .cb-fill.you {
+      background: linear-gradient(90deg, var(--accent), #06b6d4);
+    }
+    .comparison-bar-item .cb-fill.avg {
+      background: rgba(128,128,128,0.35);
+    }
+    .comparison-bar-item .cb-val {
+      width: 60px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .milestones-timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .milestone-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .milestone-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+      border-radius: 4px 0 0 4px;
+    }
+    .milestone-card .mc-date {
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+    .milestone-card .mc-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    .milestone-card .mc-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.3rem;
+    }
+    .milestone-card .mc-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .milestone-card .mc-badge {
+      display: inline-block;
+      margin-top: 0.6rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: rgba(34,197,94,0.12);
+      color: #22c55e;
+    }
+
+    .breakdown-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .breakdown-card canvas {
+      width: 260px !important;
+      height: 260px !important;
+    }
+    .breakdown-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .legend-label {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+    .legend-value {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-left: auto;
+    }
+
+    .actions-row {
+      display: flex;
+      justify-content: center;
+      gap: 1.25rem;
+      padding: 2rem 2rem 4rem;
+      flex-wrap: wrap;
+    }
+    .action-btn {
+      padding: 0.9rem 2.2rem;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+    .action-btn.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .action-btn.primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+    .action-btn.secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+    .action-btn.secondary:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .share-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    .share-modal-overlay.open {
+      display: flex;
+    }
+    .share-modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+    }
+    .share-modal h3 {
+      font-size: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+    .share-modal p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      font-size: 0.92rem;
+    }
+    .share-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    .share-icon-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s ease;
+      color: #fff;
+    }
+    .share-icon-btn:hover { transform: scale(1.12); }
+    .share-icon-btn.twitter { background: #1da1f2; }
+    .share-icon-btn.facebook { background: #1877f2; }
+    .share-icon-btn.linkedin { background: #0077b5; }
+    .share-icon-btn.instagram { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .share-icon-btn.whatsapp { background: #25d366; }
+    .share-icon-btn.copy-link { background: var(--bg); color: var(--text-primary); border: 1px solid var(--border); font-size: 1.1rem; }
+    .share-modal .close-share {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+    }
+    .share-link-box {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .share-link-box input {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text-primary);
+      font-size: 0.88rem;
+    }
+    .share-link-box button {
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .animate-count {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .animate-count.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1024px) {
+      .stat-cards-row,
+      .community-stats-grid,
+      .milestones-timeline {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .chart-grid { grid-template-columns: 1fr; }
+      .score-section { flex-direction: column; }
+      .breakdown-card { flex-direction: column; }
+    }
+    @media (max-width: 640px) {
+      .stat-cards-row,
+      .community-stats-grid,
+      .milestones-timeline {
+        grid-template-columns: 1fr;
+      }
+      .impact-header h1 { font-size: 2rem; }
+      .impact-stat-card .stat-value { font-size: 2rem; }
+      .period-tabs { gap: 0.35rem; }
+      .period-tabs .tab-btn { padding: 0.5rem 1rem; font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-icon">🌿</div>EcoSphere</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="calculator.html">Track</a></li>
+      <li><a href="challenges.html">Challenges</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="learn.html">Learn</a></li>
+      <li><a href="events.html">Events</a></li>
+    </ul>
+    <div class="nav-right"><button class="theme-toggle" id="themeToggle">☀️</button><a href="profile.html" class="nav-profile">AS</a></div>
+    <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+
+  <header class="impact-header animate-count bloom-page-hero">
+    <div class="bloom-page-video-bg"><img src="https://images.pexels.com/photos/459728/pexels-photo-459728.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="Impact Hero" /></div>
+    <h1>Impact Reports 📊</h1>
+    <p>See the real difference you're making</p>
+  </header>
+
+  <div class="period-tabs">
+    <button class="tab-btn active" data-tabs-group="impact" data-tab="month">This Month</button>
+    <button class="tab-btn" data-tabs-group="impact" data-tab="quarter">This Quarter</button>
+    <button class="tab-btn" data-tabs-group="impact" data-tab="year">This Year</button>
+    <button class="tab-btn" data-tabs-group="impact" data-tab="alltime">All Time</button>
+  </div>
+
+  <!-- Tab Panes -->
+  <div class="tab-pane active" data-tab-content="month" data-tabs-group="impact">
+
+    <div class="impact-section animate-count">
+      <div class="section-label">Your Footprint</div>
+      <div class="section-title">Personal Impact Summary</div>
+
+      <div class="stat-cards-row">
+        <div class="impact-stat-card carbon">
+          <div class="stat-icon">🌳</div>
+          <div class="stat-value" data-count="2.4" data-decimals="1">0</div>
+          <div class="stat-label">Tons CO₂ Reduced</div>
+        </div>
+        <div class="impact-stat-card water">
+          <div class="stat-icon">💧</div>
+          <div class="stat-value" data-count="850" data-decimals="0">0</div>
+          <div class="stat-label">Liters Water Saved</div>
+        </div>
+        <div class="impact-stat-card waste">
+          <div class="stat-icon">♻️</div>
+          <div class="stat-value" data-count="45" data-decimals="0">0</div>
+          <div class="stat-label">Kg Waste Recycled</div>
+        </div>
+        <div class="impact-stat-card energy">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-value" data-count="120" data-decimals="0">0</div>
+          <div class="stat-label">kWh Energy Saved</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="impact-section animate-count">
+      <div class="section-label">Overall</div>
+      <div class="section-title">Your Impact Score</div>
+
+      <div class="score-section">
+        <div class="score-canvas-wrap">
+          <canvas id="impactScoreCanvas" width="220" height="220"></canvas>
+          <div class="score-center-text">
+            <div class="score-number" data-count="78" data-decimals="0">0</div>
+            <div class="score-of">/100</div>
+          </div>
+        </div>
+        <div class="score-details">
+          <h3>Great progress! 🎉</h3>
+          <p>Your impact score is calculated from daily tracking consistency, challenge completions, community engagement, and learning milestones.</p>
+          <div class="score-breakdown-item">
+            <span class="label">Daily Tracking</span>
+            <div class="bar-wrap"><div class="bar-fill" data-width="85"></div></div>
+            <span>85</span>
+          </div>
+          <div class="score-breakdown-item">
+            <span class="label">Challenges</span>
+            <div class="bar-wrap"><div class="bar-fill" data-width="72"></div></div>
+            <span>72</span>
+          </div>
+          <div class="score-breakdown-item">
+            <span class="label">Community</span>
+            <div class="bar-wrap"><div class="bar-fill" data-width="68"></div></div>
+            <span>68</span>
+          </div>
+          <div class="score-breakdown-item">
+            <span class="label">Learning</span>
+            <div class="bar-wrap"><div class="bar-fill" data-width="80"></div></div>
+            <span>80</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="impact-section animate-count">
+      <div class="section-label">Trends</div>
+      <div class="section-title">Monthly Carbon Reduction</div>
+
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Carbon Footprint (Tons CO₂)</h3>
+          <canvas id="carbonTrendChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>Water Saved (Liters)</h3>
+          <canvas id="waterSavedChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="impact-section animate-count">
+      <div class="section-label">Together</div>
+      <div class="section-title">Your Community's Impact</div>
+
+      <div class="community-stats-grid">
+        <div class="community-stat">
+          <div class="cs-icon">🌍</div>
+          <div class="cs-value" data-count="12400" data-decimals="0">0</div>
+          <div class="cs-label">Tons Carbon Reduced</div>
+        </div>
+        <div class="community-stat">
+          <div class="cs-icon">💧</div>
+          <div class="cs-value" data-count="850000" data-decimals="0">0</div>
+          <div class="cs-label">Liters Water Saved</div>
+        </div>
+        <div class="community-stat">
+          <div class="cs-icon">♻️</div>
+          <div class="cs-value" data-count="45000" data-decimals="0">0</div>
+          <div class="cs-label">Kg Waste Recycled</div>
+        </div>
+        <div class="community-stat">
+          <div class="cs-icon">👥</div>
+          <div class="cs-value" data-count="52340" data-decimals="0">0</div>
+          <div class="cs-label">Active Members</div>
+        </div>
+      </div>
+
+      <div class="comparison-chart-card">
+        <h3>You vs. Community Average</h3>
+        <div class="comparison-bar-group">
+          <div class="comparison-bar-item">
+            <span class="cb-label">Carbon Reduced</span>
+            <div class="cb-track"><div class="cb-fill you" data-cb-width="82"></div></div>
+            <span class="cb-val">2.4t</span>
+          </div>
+          <div class="comparison-bar-item">
+            <span class="cb-label"></span>
+            <div class="cb-track"><div class="cb-fill avg" data-cb-width="45"></div></div>
+            <span class="cb-val">1.3t</span>
+          </div>
+          <div class="comparison-bar-item">
+            <span class="cb-label">Water Saved</span>
+            <div class="cb-track"><div class="cb-fill you" data-cb-width="75"></div></div>
+            <span class="cb-val">850L</span>
+          </div>
+          <div class="comparison-bar-item">
+            <span class="cb-label"></span>
+            <div class="cb-track"><div class="cb-fill avg" data-cb-width="38"></div></div>
+            <span class="cb-val">430L</span>
+          </div>
+          <div class="comparison-bar-item">
+            <span class="cb-label">Waste Recycled</span>
+            <div class="cb-track"><div class="cb-fill you" data-cb-width="70"></div></div>
+            <span class="cb-val">45kg</span>
+          </div>
+          <div class="comparison-bar-item">
+            <span class="cb-label"></span>
+            <div class="cb-track"><div class="cb-fill avg" data-cb-width="35"></div></div>
+            <span class="cb-val">22kg</span>
+          </div>
+          <div class="comparison-bar-item">
+            <span class="cb-label">Energy Saved</span>
+            <div class="cb-track"><div class="cb-fill you" data-cb-width="88"></div></div>
+            <span class="cb-val">120kWh</span>
+          </div>
+          <div class="comparison-bar-item">
+            <span class="cb-label"></span>
+            <div class="cb-track"><div class="cb-fill avg" data-cb-width="42"></div></div>
+            <span class="cb-val">56kWh</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="impact-section animate-count">
+      <div class="section-label">History</div>
+      <div class="section-title">Milestones Timeline</div>
+
+      <div class="milestones-timeline">
+        <div class="milestone-card">
+          <div class="mc-date">Mar 12, 2026</div>
+          <div class="mc-icon">🌱</div>
+          <div class="mc-title">First 100kg CO₂ Reduced</div>
+          <div class="mc-desc">You reached your first 100 kilograms of carbon dioxide reduction through daily sustainable choices.</div>
+          <div class="mc-badge">Achieved</div>
+        </div>
+        <div class="milestone-card">
+          <div class="mc-date">Apr 28, 2026</div>
+          <div class="mc-icon">💧</div>
+          <div class="mc-title">1000L Water Saved</div>
+          <div class="mc-desc">Water conservation efforts reached a cumulative 1000 liters through mindful daily usage.</div>
+          <div class="mc-badge">Achieved</div>
+        </div>
+        <div class="milestone-card">
+          <div class="mc-date">Jun 15, 2026</div>
+          <div class="mc-icon">🏆</div>
+          <div class="mc-title">Completed 25 Challenges</div>
+          <div class="mc-desc">You finished 25 environmental challenges, from zero-waste weeks to energy-saving sprints.</div>
+          <div class="mc-badge">Achieved</div>
+        </div>
+        <div class="milestone-card">
+          <div class="mc-date">Aug 02, 2026</div>
+          <div class="mc-icon">⭐</div>
+          <div class="mc-title">Top 10% of Users</div>
+          <div class="mc-desc">Your consistent efforts placed you in the top 10% of all EcoSphere members nationwide.</div>
+          <div class="mc-badge">Achieved</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="impact-section animate-count">
+      <div class="section-label">Sources</div>
+      <div class="section-title">Impact Breakdown</div>
+
+      <div class="breakdown-card">
+        <canvas id="impactBreakdownChart"></canvas>
+        <div class="breakdown-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#22c55e"></div>
+            <span class="legend-label">Challenges</span>
+            <span class="legend-value">35%</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#3b82f6"></div>
+            <span class="legend-label">Daily Tracking</span>
+            <span class="legend-value">25%</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#06b6d4"></div>
+            <span class="legend-label">Community Actions</span>
+            <span class="legend-value">20%</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#f59e0b"></div>
+            <span class="legend-label">Learning</span>
+            <span class="legend-value">15%</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background:#a855f7"></div>
+            <span class="legend-label">Marketplace</span>
+            <span class="legend-value">5%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Other period tabs show placeholder -->
+  <div class="tab-pane" data-tab-content="quarter" data-tabs-group="impact">
+    <div class="impact-section" style="text-align:center;padding:5rem 2rem;">
+      <div style="font-size:3rem;margin-bottom:1rem;">📈</div>
+      <h2 style="margin-bottom:0.5rem;">Quarterly Report</h2>
+      <p style="color:var(--text-secondary);">Your quarterly impact data is being compiled. Check back soon for detailed trends and insights.</p>
+    </div>
+  </div>
+  <div class="tab-pane" data-tab-content="year" data-tabs-group="impact">
+    <div class="impact-section" style="text-align:center;padding:5rem 2rem;">
+      <div style="font-size:3rem;margin-bottom:1rem;">📊</div>
+      <h2 style="margin-bottom:0.5rem;">Annual Report</h2>
+      <p style="color:var(--text-secondary);">Your annual impact summary will be available at the end of the year with comprehensive analytics.</p>
+    </div>
+  </div>
+  <div class="tab-pane" data-tab-content="alltime" data-tabs-group="impact">
+    <div class="impact-section" style="text-align:center;padding:5rem 2rem;">
+      <div style="font-size:3rem;margin-bottom:1rem;">🗓️</div>
+      <h2 style="margin-bottom:0.5rem;">All-Time Report</h2>
+      <p style="color:var(--text-secondary);">Your complete impact journey since joining EcoSphere — every metric, every milestone.</p>
+    </div>
+  </div>
+
+  <div class="actions-row animate-count">
+    <button class="action-btn primary" id="downloadReportBtn">📥 Download Report (PDF)</button>
+    <button class="action-btn secondary" id="shareImpactBtn">📤 Share Your Impact</button>
+  </div>
+
+  <div class="share-modal-overlay" id="shareModal">
+    <div class="share-modal">
+      <button class="close-share" id="closeShareModal">✕</button>
+      <h3>Share Your Impact</h3>
+      <p>Show the world the difference you're making for the planet.</p>
+      <div class="share-icons">
+        <button class="share-icon-btn twitter" title="Twitter">𝕏</button>
+        <button class="share-icon-btn facebook" title="Facebook">f</button>
+        <button class="share-icon-btn linkedin" title="LinkedIn">in</button>
+        <button class="share-icon-btn instagram" title="Instagram">📷</button>
+        <button class="share-icon-btn whatsapp" title="WhatsApp">💬</button>
+      </div>
+      <div class="share-link-box">
+        <input type="text" value="https://ecosphere.app/share/user123" readonly>
+        <button id="copyShareLink">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="nav-logo"><div class="nav-logo-icon">🌿</div>EcoSphere</div><p>Empowering students and communities to understand and improve their environmental impact.</p></div>
+      <div class="footer-col"><h4>Platform</h4><a href="dashboard.html">Dashboard</a><a href="calculator.html">Carbon Calculator</a><a href="challenges.html">Challenges</a><a href="marketplace.html">Marketplace</a></div>
+      <div class="footer-col"><h4>Community</h4><a href="community.html">Feed</a><a href="leaderboard.html">Leaderboard</a><a href="events.html">Events</a><a href="learn.html">Learning Hub</a></div>
+      <div class="footer-col"><h4>Company</h4><a href="about.html">About</a><a href="impact.html">Impact Reports</a><a href="profile.html">Profile</a><a href="#">Privacy Policy</a></div>
+    </div>
+    <div class="footer-bottom"><span>&copy; 2026 EcoSphere. All rights reserved.</span><span>Built with 💚 for TechManthan</span></div>
+  </footer>
+
+  <script src="scripts/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      /* ── Period Tabs ── */
+      document.querySelectorAll('.tab-btn[data-tabs-group="impact"]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var group = this.getAttribute('data-tabs-group');
+          var tab = this.getAttribute('data-tab');
+          document.querySelectorAll('.tab-btn[data-tabs-group="' + group + '"]').forEach(function (b) { b.classList.remove('active'); });
+          this.classList.add('active');
+          document.querySelectorAll('.tab-pane[data-tabs-group="' + group + '"]').forEach(function (pane) {
+            pane.classList.toggle('active', pane.getAttribute('data-tab-content') === tab);
+          });
+        });
+      });
+
+      /* ── Animate counts on scroll ── */
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            var counters = entry.target.querySelectorAll('[data-count]');
+            counters.forEach(function (el) {
+              animateCount(el);
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.animate-count').forEach(function (el) { observer.observe(el); });
+
+      function animateCount(el) {
+        var target = parseFloat(el.getAttribute('data-count'));
+        var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+        var duration = 1800;
+        var start = 0;
+        var startTime = null;
+
+        function formatNumber(num) {
+          if (num >= 100000) {
+            return num.toLocaleString('en-US');
+          }
+          if (decimals > 0) return num.toFixed(decimals);
+          return Math.round(num).toLocaleString('en-US');
+        }
+
+        function step(ts) {
+          if (!startTime) startTime = ts;
+          var progress = Math.min((ts - startTime) / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          var current = start + (target - start) * eased;
+          el.textContent = formatNumber(current);
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      /* ── Impact Score radial ── */
+      var scoreCanvas = document.getElementById('impactScoreCanvas');
+      if (scoreCanvas) {
+        var ctx = scoreCanvas.getContext('2d');
+        var cw = scoreCanvas.width, ch = scoreCanvas.height;
+        var cx = cw / 2, cy = ch / 2;
+        var radius = 90;
+        var score = 78;
+        var animProgress = 0;
+
+        function drawScore() {
+          ctx.clearRect(0, 0, cw, ch);
+          // bg ring
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(128,128,128,0.15)';
+          ctx.lineWidth = 14;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+          // progress arc
+          var angle = (animProgress / 100) * Math.PI * 2 - Math.PI / 2;
+          var grad = ctx.createLinearGradient(0, 0, cw, ch);
+          grad.addColorStop(0, '#22c55e');
+          grad.addColorStop(1, '#06b6d4');
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius, -Math.PI / 2, angle);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 14;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+        }
+
+        var scoreObs = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              var startTs = null;
+              function animScore(ts) {
+                if (!startTs) startTs = ts;
+                var p = Math.min((ts - startTs) / 1600, 1);
+                var eased = 1 - Math.pow(1 - p, 3);
+                animProgress = eased * score;
+                drawScore();
+                if (p < 1) requestAnimationFrame(animScore);
+              }
+              requestAnimationFrame(animScore);
+              scoreObs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.3 });
+        scoreObs.observe(scoreCanvas);
+
+        /* ── Score breakdown bars ── */
+        document.querySelectorAll('.score-breakdown-item .bar-fill').forEach(function (bar) {
+          var w = bar.getAttribute('data-width');
+          var bObs = new IntersectionObserver(function (ents) {
+            ents.forEach(function (e) {
+              if (e.isIntersecting) {
+                bar.style.width = w + '%';
+                bObs.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.5 });
+          bObs.observe(bar);
+        });
+      }
+
+      /* ── Line chart: carbon trend ── */
+      var carbonCanvas = document.getElementById('carbonTrendChart');
+      if (carbonCanvas) {
+        var cCtx = carbonCanvas.getContext('2d');
+        var carbonLabels = ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
+        var carbonData = [1.2, 1.6, 1.9, 2.1, 2.3, 2.4];
+
+        function drawCarbonLine() {
+          var W = carbonCanvas.width = carbonCanvas.offsetWidth * 2;
+          var H = carbonCanvas.height = carbonCanvas.offsetHeight * 2;
+          cCtx.scale(2, 2);
+          var w = W / 2, h = H / 2;
+          cCtx.clearRect(0, 0, w, h);
+
+          var pad = { top: 20, right: 20, bottom: 40, left: 50 };
+          var chartW = w - pad.left - pad.right;
+          var chartH = h - pad.top - pad.bottom;
+          var maxVal = 3;
+
+          // grid
+          cCtx.strokeStyle = 'rgba(128,128,128,0.1)';
+          cCtx.lineWidth = 1;
+          for (var i = 0; i <= 5; i++) {
+            var yy = pad.top + (chartH / 5) * i;
+            cCtx.beginPath();
+            cCtx.moveTo(pad.left, yy);
+            cCtx.lineTo(w - pad.right, yy);
+            cCtx.stroke();
+            cCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary') || '#888';
+            cCtx.font = '11px sans-serif';
+            cCtx.textAlign = 'right';
+            cCtx.fillText((maxVal - (maxVal / 5) * i).toFixed(1), pad.left - 8, yy + 4);
+          }
+
+          // labels
+          cCtx.textAlign = 'center';
+          cCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary') || '#888';
+          carbonLabels.forEach(function (label, idx) {
+            var x = pad.left + (chartW / (carbonLabels.length - 1)) * idx;
+            cCtx.fillText(label, x, h - 10);
+          });
+
+          // area fill
+          cCtx.beginPath();
+          carbonData.forEach(function (val, idx) {
+            var x = pad.left + (chartW / (carbonData.length - 1)) * idx;
+            var y = pad.top + chartH - (val / maxVal) * chartH;
+            if (idx === 0) cCtx.moveTo(x, y);
+            else cCtx.lineTo(x, y);
+          });
+          cCtx.lineTo(pad.left + chartW, pad.top + chartH);
+          cCtx.lineTo(pad.left, pad.top + chartH);
+          cCtx.closePath();
+          var areaGrad = cCtx.createLinearGradient(0, pad.top, 0, pad.top + chartH);
+          areaGrad.addColorStop(0, 'rgba(34,197,94,0.25)');
+          areaGrad.addColorStop(1, 'rgba(34,197,94,0.02)');
+          cCtx.fillStyle = areaGrad;
+          cCtx.fill();
+
+          // line
+          cCtx.beginPath();
+          carbonData.forEach(function (val, idx) {
+            var x = pad.left + (chartW / (carbonData.length - 1)) * idx;
+            var y = pad.top + chartH - (val / maxVal) * chartH;
+            if (idx === 0) cCtx.moveTo(x, y);
+            else cCtx.lineTo(x, y);
+          });
+          cCtx.strokeStyle = '#22c55e';
+          cCtx.lineWidth = 2.5;
+          cCtx.lineJoin = 'round';
+          cCtx.stroke();
+
+          // dots
+          carbonData.forEach(function (val, idx) {
+            var x = pad.left + (chartW / (carbonData.length - 1)) * idx;
+            var y = pad.top + chartH - (val / maxVal) * chartH;
+            cCtx.beginPath();
+            cCtx.arc(x, y, 4, 0, Math.PI * 2);
+            cCtx.fillStyle = '#22c55e';
+            cCtx.fill();
+            cCtx.beginPath();
+            cCtx.arc(x, y, 2, 0, Math.PI * 2);
+            cCtx.fillStyle = '#fff';
+            cCtx.fill();
+          });
+        }
+        var coObs = new IntersectionObserver(function (ents) {
+          ents.forEach(function (e) {
+            if (e.isIntersecting) {
+              drawCarbonLine();
+              coObs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.2 });
+        coObs.observe(carbonCanvas);
+      }
+
+      /* ── Bar chart: water saved ── */
+      var waterCanvas = document.getElementById('waterSavedChart');
+      if (waterCanvas) {
+        var wCtx = waterCanvas.getContext('2d');
+        var waterLabels = ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
+        var waterData = [320, 410, 550, 680, 770, 850];
+
+        function drawWaterBars() {
+          var W = waterCanvas.width = waterCanvas.offsetWidth * 2;
+          var H = waterCanvas.height = waterCanvas.offsetHeight * 2;
+          wCtx.scale(2, 2);
+          var w = W / 2, h = H / 2;
+          wCtx.clearRect(0, 0, w, h);
+
+          var pad = { top: 20, right: 20, bottom: 40, left: 55 };
+          var chartW = w - pad.left - pad.right;
+          var chartH = h - pad.top - pad.bottom;
+          var maxVal = 1000;
+          var barCount = waterData.length;
+          var gap = 12;
+          var barW = (chartW - gap * (barCount + 1)) / barCount;
+
+          // grid
+          wCtx.strokeStyle = 'rgba(128,128,128,0.1)';
+          wCtx.lineWidth = 1;
+          for (var i = 0; i <= 5; i++) {
+            var yy = pad.top + (chartH / 5) * i;
+            wCtx.beginPath();
+            wCtx.moveTo(pad.left, yy);
+            wCtx.lineTo(w - pad.right, yy);
+            wCtx.stroke();
+            wCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary') || '#888';
+            wCtx.font = '11px sans-serif';
+            wCtx.textAlign = 'right';
+            wCtx.fillText(Math.round(maxVal - (maxVal / 5) * i), pad.left - 8, yy + 4);
+          }
+
+          waterData.forEach(function (val, idx) {
+            var x = pad.left + gap + (barW + gap) * idx;
+            var barH = (val / maxVal) * chartH;
+            var y = pad.top + chartH - barH;
+
+            var grad = wCtx.createLinearGradient(x, y, x, pad.top + chartH);
+            grad.addColorStop(0, '#3b82f6');
+            grad.addColorStop(1, '#1d4ed8');
+            wCtx.fillStyle = grad;
+
+            // rounded top
+            var r = 4;
+            wCtx.beginPath();
+            wCtx.moveTo(x + r, y);
+            wCtx.lineTo(x + barW - r, y);
+            wCtx.quadraticCurveTo(x + barW, y, x + barW, y + r);
+            wCtx.lineTo(x + barW, pad.top + chartH);
+            wCtx.lineTo(x, pad.top + chartH);
+            wCtx.lineTo(x, y + r);
+            wCtx.quadraticCurveTo(x, y, x + r, y);
+            wCtx.closePath();
+            wCtx.fill();
+
+            // label
+            wCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary') || '#888';
+            wCtx.font = '11px sans-serif';
+            wCtx.textAlign = 'center';
+            wCtx.fillText(waterLabels[idx], x + barW / 2, h - 10);
+          });
+        }
+        var wObs = new IntersectionObserver(function (ents) {
+          ents.forEach(function (e) {
+            if (e.isIntersecting) {
+              drawWaterBars();
+              wObs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.2 });
+        wObs.observe(waterCanvas);
+      }
+
+      /* ── Doughnut chart: impact breakdown ── */
+      var doughnutCanvas = document.getElementById('impactBreakdownChart');
+      if (doughnutCanvas) {
+        var dCtx = doughnutCanvas.getContext('2d');
+        var segments = [
+          { value: 35, color: '#22c55e', label: 'Challenges' },
+          { value: 25, color: '#3b82f6', label: 'Daily Tracking' },
+          { value: 20, color: '#06b6d4', label: 'Community Actions' },
+          { value: 15, color: '#f59e0b', label: 'Learning' },
+          { value: 5,  color: '#a855f7', label: 'Marketplace' }
+        ];
+
+        function drawDoughnut() {
+          var dpr = window.devicePixelRatio || 2;
+          var size = 260;
+          doughnutCanvas.width = size * dpr;
+          doughnutCanvas.height = size * dpr;
+          doughnutCanvas.style.width = size + 'px';
+          doughnutCanvas.style.height = size + 'px';
+          dCtx.scale(dpr, dpr);
+
+          var cx = size / 2, cy = size / 2;
+          var outerR = 110, innerR = 65;
+          var total = segments.reduce(function (s, seg) { return s + seg.value; }, 0);
+          var startAngle = -Math.PI / 2;
+
+          segments.forEach(function (seg) {
+            var sliceAngle = (seg.value / total) * Math.PI * 2;
+            dCtx.beginPath();
+            dCtx.arc(cx, cy, outerR, startAngle, startAngle + sliceAngle);
+            dCtx.arc(cx, cy, innerR, startAngle + sliceAngle, startAngle, true);
+            dCtx.closePath();
+            dCtx.fillStyle = seg.color;
+            dCtx.fill();
+            startAngle += sliceAngle;
+          });
+
+          // center circle
+          dCtx.beginPath();
+          dCtx.arc(cx, cy, innerR - 2, 0, Math.PI * 2);
+          var bgCard = getComputedStyle(document.documentElement).getPropertyValue('--bg-card') || '#1e1e2e';
+          dCtx.fillStyle = bgCard;
+          dCtx.fill();
+
+          // center text
+          dCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-primary') || '#fff';
+          dCtx.font = 'bold 22px sans-serif';
+          dCtx.textAlign = 'center';
+          dCtx.textBaseline = 'middle';
+          dCtx.fillText('100%', cx, cy - 6);
+          dCtx.font = '12px sans-serif';
+          dCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary') || '#888';
+          dCtx.fillText('Total Impact', cx, cy + 14);
+        }
+        var dObs = new IntersectionObserver(function (ents) {
+          ents.forEach(function (e) {
+            if (e.isIntersecting) {
+              drawDoughnut();
+              dObs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.3 });
+        dObs.observe(doughnutCanvas);
+      }
+
+      /* ── Comparison bars animation ── */
+      document.querySelectorAll('.comparison-bar-item .cb-fill').forEach(function (bar) {
+        var w = bar.getAttribute('data-cb-width');
+        bar.style.width = '0%';
+        var cbObs = new IntersectionObserver(function (ents) {
+          ents.forEach(function (e) {
+            if (e.isIntersecting) {
+              setTimeout(function () { bar.style.width = w + '%'; }, 200);
+              cbObs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.3 });
+        cbObs.observe(bar);
+      });
+
+      /* ── Community stat counts ── */
+      document.querySelectorAll('.community-stat .cs-value').forEach(function (el) {
+        var coObs2 = new IntersectionObserver(function (ents) {
+          ents.forEach(function (e) {
+            if (e.isIntersecting) {
+              animateCount(el);
+              coObs2.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.3 });
+        coObs2.observe(el);
+      });
+
+      /* ── Share Modal ── */
+      var shareBtn = document.getElementById('shareImpactBtn');
+      var shareModal = document.getElementById('shareModal');
+      var closeShare = document.getElementById('closeShareModal');
+      var copyLink = document.getElementById('copyShareLink');
+
+      shareBtn.addEventListener('click', function () {
+        shareModal.classList.add('open');
+      });
+      closeShare.addEventListener('click', function () {
+        shareModal.classList.remove('open');
+      });
+      shareModal.addEventListener('click', function (e) {
+        if (e.target === shareModal) shareModal.classList.remove('open');
+      });
+      copyLink.addEventListener('click', function () {
+        var input = shareModal.querySelector('input');
+        input.select();
+        document.execCommand('copy');
+        copyLink.textContent = 'Copied!';
+        setTimeout(function () { copyLink.textContent = 'Copy'; }, 2000);
+      });
+
+      /* ── Download button ── */
+      document.getElementById('downloadReportBtn').addEventListener('click', function () {
+        alert('Your Impact Report PDF is being generated and will download shortly.');
+      });
+
+      /* ── Redraw charts on resize ── */
+      var resizeTimer;
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          if (carbonCanvas) drawCarbonLine();
+          if (waterCanvas) drawWaterBars();
+          if (doughnutCanvas) drawDoughnut();
+        }, 250);
+      });
+    });
+  </script>
+</body>
+</html>

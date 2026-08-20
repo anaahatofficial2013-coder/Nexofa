@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECO MARKETPLACE — EcoSphere</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo"><div class="nav-logo-icon">🌿</div>EcoSphere</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="calculator.html">Track</a></li>
+    <li><a href="challenges.html">Challenges</a></li>
+    <li><a href="marketplace.html" class="active">Marketplace</a></li>
+    <li><a href="community.html">Community</a></li>
+    <li><a href="learn.html">Learn</a></li>
+    <li><a href="events.html">Events</a></li>
+  </ul>
+  <div class="nav-right"><button class="theme-toggle" id="themeToggle">☀️</button><a href="profile.html" class="nav-profile">AS</a></div>
+  <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- Page Header -->
+<section class="section bloom-page-hero" style="text-align:center; padding-top:120px;">
+  <div class="bloom-page-video-bg"><img src="https://images.pexels.com/photos/3735218/pexels-photo-3735218.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="Marketplace Hero" /></div>
+  <h1 class="section-title">Eco Marketplace 🛒</h1>
+  <p class="section-subtitle">Discover sustainable products for a better tomorrow</p>
+</section>
+
+<!-- Search Bar -->
+<section class="section" style="max-width:800px; margin:0 auto; padding:0 24px 16px;">
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search eco-friendly products..." class="search-input">
+  </div>
+</section>
+
+<!-- Sorting & Filter Controls -->
+<section class="section" style="max-width:1200px; margin:0 auto; padding:0 24px 24px;">
+  <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+    <!-- Category Tabs -->
+    <div class="tabs" id="categoryTabs" style="overflow-x:auto; white-space:nowrap; flex:1;">
+      <button class="tab active" data-category="all">All</button>
+      <button class="tab" data-category="reusable">Reusable Products</button>
+      <button class="tab" data-category="fashion">Sustainable Fashion</button>
+      <button class="tab" data-category="home">Eco Home</button>
+      <button class="tab" data-category="stationery">Stationery</button>
+      <button class="tab" data-category="personal">Personal Care</button>
+    </div>
+    <!-- Sort Dropdown -->
+    <div style="flex-shrink:0;">
+      <select id="sortSelect" class="form-select" style="padding:8px 14px; border-radius:8px; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:0.9rem;">
+        <option value="relevance">Sort by: Relevance</option>
+        <option value="price-low">Sort by: Price Low → High</option>
+        <option value="price-high">Sort by: Price High → Low</option>
+        <option value="eco">Sort by: Eco Score</option>
+        <option value="rating">Sort by: Rating</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- Filters Panel -->
+<section class="section" style="max-width:1200px; margin:0 auto; padding:0 24px 32px;">
+  <div class="card animate-on-scroll" style="padding:20px 28px;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px; cursor:pointer;" id="filterToggle">
+      <span style="font-size:1.2rem;">⚙️</span>
+      <h3 style="margin:0; font-size:1rem;">Filters</h3>
+      <span id="filterArrow" style="margin-left:auto; transition:transform 0.3s;">▼</span>
+    </div>
+    <div id="filterPanel" style="display:none;">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:24px;">
+        <!-- Price Range -->
+        <div>
+          <label style="font-weight:600; display:block; margin-bottom:8px;">Price Range</label>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <input type="range" id="priceRange" min="0" max="3000" value="3000" style="flex:1; accent-color:var(--primary, #2e7d32);">
+            <span id="priceRangeValue" style="white-space:nowrap; font-size:0.9rem; font-weight:600;">₹3000</span>
+          </div>
+        </div>
+        <!-- Eco Score -->
+        <div>
+          <label style="font-weight:600; display:block; margin-bottom:8px;">Minimum Eco Score</label>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <input type="range" id="ecoScoreRange" min="0" max="10" value="0" style="flex:1; accent-color:var(--primary, #2e7d32);">
+            <span id="ecoScoreRangeValue" style="white-space:nowrap; font-size:0.9rem; font-weight:600;">0/10</span>
+          </div>
+        </div>
+        <!-- Rating -->
+        <div>
+          <label style="font-weight:600; display:block; margin-bottom:8px;">Minimum Rating</label>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <input type="range" id="ratingRange" min="0" max="5" value="0" step="0.5" style="flex:1; accent-color:var(--primary, #2e7d32);">
+            <span id="ratingRangeValue" style="white-space:nowrap; font-size:0.9rem; font-weight:600;">0 ★</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:16px; text-align:right;">
+        <button id="resetFilters" class="btn btn-secondary" style="margin-right:8px;">Reset Filters</button>
+        <button id="applyFilters" class="btn btn-primary">Apply Filters</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products Banner -->
+<section class="section" style="max-width:1200px; margin:0 auto; padding:0 24px 40px;">
+  <h2 class="section-title" style="font-size:1.6rem; margin-bottom:20px;">Featured Products ⭐</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(340px, 1fr)); gap:24px;">
+    <!-- Featured 1 -->
+    <div class="featured-banner" style="background:linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); border-radius:16px; padding:36px 32px; color:#fff; position:relative; overflow:hidden; min-height:200px;">
+      <div style="position:absolute; top:-20px; right:-20px; font-size:8rem; opacity:0.15;">🌿</div>
+      <span style="display:inline-block; background:rgba(255,255,255,0.25); padding:4px 14px; border-radius:20px; font-size:0.8rem; font-weight:600; margin-bottom:12px;">Editor's Choice</span>
+      <h3 style="font-size:1.5rem; margin:0 0 8px;">Stainless Steel Bottle</h3>
+      <p style="margin:0 0 16px; opacity:0.9;">Zero-waste hydration. Keeps drinks cold for 24h, hot for 12h. Perfect for daily use.</p>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <span style="font-size:1.4rem; font-weight:700;">₹799</span>
+        <span style="background:rgba(255,255,255,0.25); padding:4px 12px; border-radius:12px; font-size:0.85rem; font-weight:600;">Eco Score: 10/10</span>
+      </div>
+    </div>
+    <!-- Featured 2 -->
+    <div class="featured-banner" style="background:linear-gradient(135deg, #f57c00 0%, #ffb74d 100%); border-radius:16px; padding:36px 32px; color:#fff; position:relative; overflow:hidden; min-height:200px;">
+      <div style="position:absolute; top:-20px; right:-20px; font-size:8rem; opacity:0.15;">🔋</div>
+      <span style="display:inline-block; background:rgba(255,255,255,0.25); padding:4px 14px; border-radius:20px; font-size:0.8rem; font-weight:600; margin-bottom:12px;">Trending Now</span>
+      <h3 style="font-size:1.5rem; margin:0 0 8px;">Solar Charger</h3>
+      <p style="margin:0 0 16px; opacity:0.9;">Harness the sun. Portable solar panel charges your devices anywhere, anytime.</p>
+      <div style="display:flex; align-items:center; gap:16px;">
+        <span style="font-size:1.4rem; font-weight:700;">₹2,499</span>
+        <span style="background:rgba(255,255,255,0.25); padding:4px 12px; border-radius:12px; font-size:0.85rem; font-weight:600;">Eco Score: 9/10</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Product Grid -->
+<section class="section" style="max-width:1200px; margin:0 auto; padding:0 24px 60px;">
+  <h2 class="section-title" style="font-size:1.6rem; margin-bottom:20px;">All Products</h2>
+  <div class="product-grid" id="productGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:24px;">
+
+    <!-- Product 1 -->
+    <div class="product-card card animate-on-scroll" data-category="personal" data-name="Bamboo Toothbrush" data-price="199" data-eco="9" data-rating="4.5" data-desc="Biodegradable bamboo handle toothbrush with plant-based bristles. Naturally antimicrobial and 100% compostable. A simple swap that eliminates hundreds of plastic toothbrushes from landfills over your lifetime." data-eco-labels="Organic,Plastic-Free,Biodegradable" data-reviews="342">
+      <div class="product-image" style="background:linear-gradient(135deg, #a5d6a7, #66bb6a); height:180px; display:flex; align-items:center; justify-content:center; font-size:4rem; border-radius:12px 12px 0 0;">🪥</div>
+      <div style="padding:16px;">
+        <h3 style="margin:0 0 6px; font-size:1.1rem;">Bamboo Toothbrush</h3>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span class="eco-score-badge" style="background:#2e7d32; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600;">9/10</span>
+          <span style="color:var(--text-muted); font-size:0.85rem;">4.5 ★ (342 reviews)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Organic</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Plastic-Free</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Biodegradable</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:1.3rem; font-weight:700; color:var(--primary, #2e7d32);">₹199</span>
+          <button class="btn btn-primary add-to-cart-btn" style="padding:8px 16px; font-size:0.85rem;">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="product-card card animate-on-scroll" data-category="fashion" data-name="Organic Cotton Tote" data-price="449" data-eco="8" data-rating="4.3" data-desc="Durable organic cotton canvas tote bag. GOTS certified, ethically made. Replaces hundreds of single-use plastic bags. Machine washable and built to carry heavy loads." data-eco-labels="Organic,Fair Trade,Vegan" data-reviews="218">
+      <div class="product-image" style="background:linear-gradient(135deg, #c5e1a5, #8bc34a); height:180px; display:flex; align-items:center; justify-content:center; font-size:4rem; border-radius:12px 12px 0 0;">👜</div>
+      <div style="padding:16px;">
+        <h3 style="margin:0 0 6px; font-size:1.1rem;">Organic Cotton Tote</h3>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span class="eco-score-badge" style="background:#2e7d32; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600;">8/10</span>
+          <span style="color:var(--text-muted); font-size:0.85rem;">4.3 ★ (218 reviews)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Organic</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Fair Trade</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Vegan</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:1.3rem; font-weight:700; color:var(--primary, #2e7d32);">₹449</span>
+          <button class="btn btn-primary add-to-cart-btn" style="padding:8px 16px; font-size:0.85rem;">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product-card card animate-on-scroll" data-category="reusable" data-name="Stainless Steel Bottle" data-price="799" data-eco="10" data-rating="4.8" data-desc="Premium 18/8 stainless steel water bottle. Double-wall vacuum insulated. Keeps water cold for 24 hours and hot for 12. BPA-free, toxin-free, and practically indestructible." data-eco-labels="Plastic-Free,Reusable,BPA-Free" data-reviews="567">
+      <div class="product-image" style="background:linear-gradient(135deg, #81d4fa, #29b6f6); height:180px; display:flex; align-items:center; justify-content:center; font-size:4rem; border-radius:12px 12px 0 0;">🫙</div>
+      <div style="padding:16px;">
+        <h3 style="margin:0 0 6px; font-size:1.1rem;">Stainless Steel Bottle</h3>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span class="eco-score-badge" style="background:#2e7d32; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600;">10/10</span>
+          <span style="color:var(--text-muted); font-size:0.85rem;">4.8 ★ (567 reviews)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Plastic-Free</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Reusable</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">BPA-Free</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:1.3rem; font-weight:700; color:var(--primary, #2e7d32);">₹799</span>
+          <button class="btn btn-primary add-to-cart-btn" style="padding:8px 16px; font-size:0.85rem;">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 4 -->
+    <div class="product-card card animate-on-scroll" data-category="home" data-name="Beeswax Food Wraps" data-price="349" data-eco="9" data-rating="4.6" data-desc="Set of 3 reusable beeswax food wraps. Made from organic cotton, beeswax, jojoba oil, and tree resin. Replace cling film completely. Washable and lasts up to a year." data-eco-labels="Organic,Plastic-Free,Zero-Waste" data-reviews="189">
+      <div class="product-image" style="background:linear-gradient(135deg, #fff9c4, #ffee58); height:180px; display:flex; align-items:center; justify-content:center; font-size:4rem; border-radius:12px 12px 0 0;">🐝</div>
+      <div style="padding:16px;">
+        <h3 style="margin:0 0 6px; font-size:1.1rem;">Beeswax Food Wraps</h3>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span class="eco-score-badge" style="background:#2e7d32; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600;">9/10</span>
+          <span style="color:var(--text-muted); font-size:0.85rem;">4.6 ★ (189 reviews)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Organic</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Plastic-Free</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Zero-Waste</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:1.3rem; font-weight:700; color:var(--primary, #2e7d32);">₹349</span>
+          <button class="btn btn-primary add-to-cart-btn" style="padding:8px 16px; font-size:0.85rem;">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 5 -->
+    <div class="product-card card animate-on-scroll" data-category="fashion" data-name="Hemp Backpack" data-price="1299" data-eco="8" data-rating="4.4" data-desc="Eco-friendly hemp and recycled polyester backpack. Naturally water-resistant, antimicrobial, and incredibly durable. Multiple compartments, padded laptop sleeve, and adjustable straps." data-eco-labels="Vegan,Fair Trade,Recycled" data-reviews="156">
+      <div class="product-image" style="background:linear-gradient(135deg, #d7ccc8, #a1887f); height:180px; display:flex; align-items:center; justify-content:center; font-size:4rem; border-radius:12px 12px 0 0;">🎒</div>
+      <div style="padding:16px;">
+        <h3 style="margin:0 0 6px; font-size:1.1rem;">Hemp Backpack</h3>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span class="eco-score-badge" style="background:#2e7d32; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600;">8/10</span>
+          <span style="color:var(--text-muted); font-size:0.85rem;">4.4 ★ (156 reviews)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Vegan</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Fair Trade</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Recycled</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:1.3rem; font-weight:700; color:var(--primary, #2e7d32);">₹1,299</span>
+          <button class="btn btn-primary add-to-cart-btn" style="padding:8px 16px; font-size:0.85rem;">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 6 -->
+    <div class="product-card card animate-on-scroll" data-category="stationery" data-name="Recycled Notebook" data-price="149" data-eco="7" data-rating="4.2" data-desc="A5 notebook made from 100% post-consumer recycled paper. 120 pages, unlined. Soy-based ink cover print. FSC certified. Perfect for journaling, sketching, or daily notes." data-eco-labels="Recycled,Plant-Based,FSC" data-reviews="412">
+      <div class="product-image" style="background:linear-gradient(135deg, #b3e5fc, #4fc3f7); height:180px; display:flex; align-items:center; justify-content:center; font-size:4rem; border-radius:12px 12px 0 0;">📓</div>
+      <div style="padding:16px;">
+        <h3 style="margin:0 0 6px; font-size:1.1rem;">Recycled Notebook</h3>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span class="eco-score-badge" style="background:#2e7d32; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600;">7/10</span>
+          <span style="color:var(--text-muted); font-size:0.85rem;">4.2 ★ (412 reviews)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Recycled</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Plant-Based</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">FSC</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:1.3rem; font-weight:700; color:var(--primary, #2e7d32);">₹149</span>
+          <button class="btn btn-primary add-to-cart-btn" style="padding:8px 16px; font-size:0.85rem;">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 7 -->
+    <div class="product-card card animate-on-scroll" data-category="reusable" data-name="Solar Charger" data-price="2499" data-eco="9" data-rating="4.7" data-desc="Foldable 20W solar panel charger with USB-C and USB-A ports. High-efficiency monocrystalline cells. Waterproof, lightweight, and portable. Charges smartphones, tablets, and power banks." data-eco-labels="Solar-Powered,Plastic-Free,Durable" data-reviews="298">
+      <div class="product-image" style="background:linear-gradient(135deg, #fff176, #ffa726); height:180px; display:flex; align-items:center; justify-content:center; font-size:4rem; border-radius:12px 12px 0 0;">☀️</div>
+      <div style="padding:16px;">
+        <h3 style="margin:0 0 6px; font-size:1.1rem;">Solar Charger</h3>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span class="eco-score-badge" style="background:#2e7d32; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600;">9/10</span>
+          <span style="color:var(--text-muted); font-size:0.85rem;">4.7 ★ (298 reviews)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Solar-Powered</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Plastic-Free</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Durable</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:1.3rem; font-weight:700; color:var(--primary, #2e7d32);">₹2,499</span>
+          <button class="btn btn-primary add-to-cart-btn" style="padding:8px 16px; font-size:0.85rem;">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 8 -->
+    <div class="product-card card animate-on-scroll" data-category="home" data-name="Bamboo Cutlery Set" data-price="399" data-eco="10" data-rating="4.7" data-desc="Portable bamboo cutlery set including fork, knife, spoon, chopsticks, and cleaning brush. Comes in a cotton travel pouch. Lightweight, food-safe, and beautifully crafted." data-eco-labels="Organic,Plastic-Free,Reusable" data-reviews="423">
+      <div class="product-image" style="background:linear-gradient(135deg, #ffe0b2, #ffb74d); height:180px; display:flex; align-items:center; justify-content:center; font-size:4rem; border-radius:12px 12px 0 0;">🍴</div>
+      <div style="padding:16px;">
+        <h3 style="margin:0 0 6px; font-size:1.1rem;">Bamboo Cutlery Set</h3>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span class="eco-score-badge" style="background:#2e7d32; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600;">10/10</span>
+          <span style="color:var(--text-muted); font-size:0.85rem;">4.7 ★ (423 reviews)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Organic</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Plastic-Free</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Reusable</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:1.3rem; font-weight:700; color:var(--primary, #2e7d32);">₹399</span>
+          <button class="btn btn-primary add-to-cart-btn" style="padding:8px 16px; font-size:0.85rem;">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 9 -->
+    <div class="product-card card animate-on-scroll" data-category="personal" data-name="Natural Soap Bar" data-price="179" data-eco="8" data-rating="4.5" data-desc="Handmade cold-process soap bar with organic essential oils and plant-based ingredients. Zero packaging, zero waste. Gentle on skin and the planet. Lasts twice as long as liquid soap." data-eco-labels="Organic,Vegan,Packaging-Free" data-reviews="356">
+      <div class="product-image" style="background:linear-gradient(135deg, #f3e5f5, #ce93d8); height:180px; display:flex; align-items:center; justify-content:center; font-size:4rem; border-radius:12px 12px 0 0;">🧴</div>
+      <div style="padding:16px;">
+        <h3 style="margin:0 0 6px; font-size:1.1rem;">Natural Soap Bar</h3>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span class="eco-score-badge" style="background:#2e7d32; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600;">8/10</span>
+          <span style="color:var(--text-muted); font-size:0.85rem;">4.5 ★ (356 reviews)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Organic</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Vegan</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Packaging-Free</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:1.3rem; font-weight:700; color:var(--primary, #2e7d32);">₹179</span>
+          <button class="btn btn-primary add-to-cart-btn" style="padding:8px 16px; font-size:0.85rem;">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 10 -->
+    <div class="product-card card animate-on-scroll" data-category="home" data-name="Compost Bin" data-price="899" data-eco="9" data-rating="4.6" data-desc="Countertop compost bin with charcoal filter lid. Odorless design, BPA-free construction. Converts kitchen scraps into nutrient-rich compost. Includes 25 compostable bags to get started." data-eco-labels="Zero-Waste,Reusable,Odorless" data-reviews="245">
+      <div class="product-image" style="background:linear-gradient(135deg, #dcedc8, #aed581); height:180px; display:flex; align-items:center; justify-content:center; font-size:4rem; border-radius:12px 12px 0 0;">🪴</div>
+      <div style="padding:16px;">
+        <h3 style="margin:0 0 6px; font-size:1.1rem;">Compost Bin</h3>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span class="eco-score-badge" style="background:#2e7d32; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600;">9/10</span>
+          <span style="color:var(--text-muted); font-size:0.85rem;">4.6 ★ (245 reviews)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Zero-Waste</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Reusable</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Odorless</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:1.3rem; font-weight:700; color:var(--primary, #2e7d32);">₹899</span>
+          <button class="btn btn-primary add-to-cart-btn" style="padding:8px 16px; font-size:0.85rem;">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 11 -->
+    <div class="product-card card animate-on-scroll" data-category="reusable" data-name="Bamboo Straw Set" data-price="129" data-eco="10" data-rating="4.4" data-desc="Set of 4 reusable bamboo straws with a cleaning brush and cotton carry pouch. Naturally antibacterial, lightweight, and perfect for daily use. Each straw lasts over a year." data-eco-labels="Organic,Plastic-Free,Compostable" data-reviews="478">
+      <div class="product-image" style="background:linear-gradient(135deg, #c8e6c9, #43a047); height:180px; display:flex; align-items:center; justify-content:center; font-size:4rem; border-radius:12px 12px 0 0;">🥤</div>
+      <div style="padding:16px;">
+        <h3 style="margin:0 0 6px; font-size:1.1rem;">Bamboo Straw Set</h3>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span class="eco-score-badge" style="background:#2e7d32; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600;">10/10</span>
+          <span style="color:var(--text-muted); font-size:0.85rem;">4.4 ★ (478 reviews)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Organic</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Plastic-Free</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Compostable</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:1.3rem; font-weight:700; color:var(--primary, #2e7d32);">₹129</span>
+          <button class="btn btn-primary add-to-cart-btn" style="padding:8px 16px; font-size:0.85rem;">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 12 -->
+    <div class="product-card card animate-on-scroll" data-category="personal" data-name="Eco Earbuds" data-price="249" data-eco="8" data-rating="4.3" data-desc="Biodegradable cotton swab earbuds with bamboo sticks. 200 count per box. 100% plant-based, compostable, and plastic-free. Gentle on ears and gentle on the earth." data-eco-labels="Organic,Plastic-Free,Compostable" data-reviews="534">
+      <div class="product-image" style="background:linear-gradient(135deg, #e1bee7, #ba68c8); height:180px; display:flex; align-items:center; justify-content:center; font-size:4rem; border-radius:12px 12px 0 0;">👂</div>
+      <div style="padding:16px;">
+        <h3 style="margin:0 0 6px; font-size:1.1rem;">Eco Earbuds</h3>
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span class="eco-score-badge" style="background:#2e7d32; color:#fff; padding:2px 10px; border-radius:12px; font-size:0.8rem; font-weight:600;">8/10</span>
+          <span style="color:var(--text-muted); font-size:0.85rem;">4.3 ★ (534 reviews)</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px;">
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Organic</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Plastic-Free</span>
+          <span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:2px 8px; border-radius:8px; font-size:0.7rem; font-weight:600;">Compostable</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:1.3rem; font-weight:700; color:var(--primary, #2e7d32);">₹249</span>
+          <button class="btn btn-primary add-to-cart-btn" style="padding:8px 16px; font-size:0.85rem;">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- No Results Message -->
+  <div id="noResults" style="display:none; text-align:center; padding:60px 20px;">
+    <div style="font-size:4rem; margin-bottom:16px;">🔍</div>
+    <h3 style="margin:0 0 8px; color:var(--text);">No products found</h3>
+    <p style="margin:0; color:var(--text-muted);">Try adjusting your search or filters</p>
+  </div>
+</section>
+
+<!-- Product Detail Modal -->
+<div class="modal-overlay" id="productModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center; padding:24px;">
+  <div class="modal-content card animate-on-scroll" style="background:var(--card, #fff); border-radius:16px; max-width:640px; width:100%; max-height:90vh; overflow-y:auto; position:relative;">
+    <button id="modalClose" style="position:absolute; top:16px; right:16px; background:none; border:none; font-size:1.6rem; cursor:pointer; z-index:10; color:var(--text); width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center;">&times;</button>
+
+    <!-- Modal Image -->
+    <div id="modalImage" style="height:260px; display:flex; align-items:center; justify-content:center; font-size:6rem; border-radius:16px 16px 0 0;"></div>
+
+    <!-- Modal Body -->
+    <div style="padding:28px;">
+      <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:12px;">
+        <h2 id="modalTitle" style="margin:0; font-size:1.5rem;"></h2>
+        <span id="modalEcoBadge" style="background:#2e7d32; color:#fff; padding:4px 14px; border-radius:12px; font-size:0.85rem; font-weight:600; white-space:nowrap;"></span>
+      </div>
+
+      <div id="modalBadges" style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px;"></div>
+
+      <p id="modalDesc" style="color:var(--text-muted); line-height:1.6; margin:0 0 20px;"></p>
+
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:24px;">
+        <span id="modalPrice" style="font-size:1.8rem; font-weight:700; color:var(--primary, #2e7d32);"></span>
+        <span id="modalRating" style="color:var(--text-muted); font-size:0.95rem;"></span>
+      </div>
+
+      <!-- Reviews Section -->
+      <div style="margin-bottom:24px;">
+        <h3 style="margin:0 0 12px; font-size:1.1rem;">Customer Reviews</h3>
+        <div id="modalReviews" style="display:flex; flex-direction:column; gap:12px;"></div>
+      </div>
+
+      <button id="modalAddToCart" class="btn btn-primary" style="width:100%; padding:14px; font-size:1.05rem; border-radius:12px;">🛒 Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="nav-logo"><div class="nav-logo-icon">🌿</div>EcoSphere</div><p>Empowering students and communities to understand and improve their environmental impact.</p></div>
+    <div class="footer-col"><h4>Platform</h4><a href="dashboard.html">Dashboard</a><a href="calculator.html">Carbon Calculator</a><a href="challenges.html">Challenges</a><a href="marketplace.html">Marketplace</a></div>
+    <div class="footer-col"><h4>Community</h4><a href="community.html">Feed</a><a href="leaderboard.html">Leaderboard</a><a href="events.html">Events</a><a href="learn.html">Learning Hub</a></div>
+    <div class="footer-col"><h4>Company</h4><a href="about.html">About</a><a href="impact.html">Impact Reports</a><a href="profile.html">Profile</a><a href="#">Privacy Policy</a></div>
+  </div>
+  <div class="footer-bottom"><span>&copy; 2026 EcoSphere. All rights reserved.</span><span>Built with 💚 for TechManthan</span></div>
+</footer>
+
+<!-- Marketplace Script -->
+<script>
+(function() {
+  const searchInput = document.getElementById('searchInput');
+  const categoryTabs = document.getElementById('categoryTabs');
+  const sortSelect = document.getElementById('sortSelect');
+  const productGrid = document.getElementById('productGrid');
+  const noResults = document.getElementById('noResults');
+  const productModal = document.getElementById('productModal');
+  const modalClose = document.getElementById('modalClose');
+  const filterToggle = document.getElementById('filterToggle');
+  const filterPanel = document.getElementById('filterPanel');
+  const filterArrow = document.getElementById('filterArrow');
+  const priceRange = document.getElementById('priceRange');
+  const priceRangeValue = document.getElementById('priceRangeValue');
+  const ecoScoreRange = document.getElementById('ecoScoreRange');
+  const ecoScoreRangeValue = document.getElementById('ecoScoreRangeValue');
+  const ratingRange = document.getElementById('ratingRange');
+  const ratingRangeValue = document.getElementById('ratingRangeValue');
+  const resetFilters = document.getElementById('resetFilters');
+  const applyFilters = document.getElementById('applyFilters');
+
+  let activeCategory = 'all';
+  let searchTerm = '';
+  let maxPrice = 3000;
+  let minEcoScore = 0;
+  let minRating = 0;
+
+  // Toggle filter panel
+  filterToggle.addEventListener('click', function() {
+    var visible = filterPanel.style.display !== 'none';
+    filterPanel.style.display = visible ? 'none' : 'block';
+    filterArrow.style.transform = visible ? 'rotate(0deg)' : 'rotate(180deg)';
+  });
+
+  // Range slider labels
+  priceRange.addEventListener('input', function() {
+    priceRangeValue.textContent = '₹' + this.value;
+  });
+  ecoScoreRange.addEventListener('input', function() {
+    ecoScoreRangeValue.textContent = this.value + '/10';
+  });
+  ratingRange.addEventListener('input', function() {
+    ratingRangeValue.textContent = this.value + ' ★';
+  });
+
+  // Reset filters
+  resetFilters.addEventListener('click', function() {
+    priceRange.value = 3000;
+    priceRangeValue.textContent = '₹3000';
+    ecoScoreRange.value = 0;
+    ecoScoreRangeValue.textContent = '0/10';
+    ratingRange.value = 0;
+    ratingRangeValue.textContent = '0 ★';
+    maxPrice = 3000;
+    minEcoScore = 0;
+    minRating = 0;
+    filterAndRender();
+  });
+
+  // Apply filters
+  applyFilters.addEventListener('click', function() {
+    maxPrice = parseInt(priceRange.value);
+    minEcoScore = parseInt(ecoScoreRange.value);
+    minRating = parseFloat(ratingRange.value);
+    filterAndRender();
+  });
+
+  // Category tabs
+  categoryTabs.addEventListener('click', function(e) {
+    var tab = e.target.closest('.tab');
+    if (!tab) return;
+    categoryTabs.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+    activeCategory = tab.getAttribute('data-category');
+    filterAndRender();
+  });
+
+  // Search input
+  searchInput.addEventListener('input', function() {
+    searchTerm = this.value.toLowerCase().trim();
+    filterAndRender();
+  });
+
+  // Sort dropdown
+  sortSelect.addEventListener('change', function() {
+    filterAndRender();
+  });
+
+  function getProductCards() {
+    return Array.from(productGrid.querySelectorAll('.product-card'));
+  }
+
+  function filterAndRender() {
+    var cards = getProductCards();
+    var visible = [];
+
+    cards.forEach(function(card) {
+      var name = card.getAttribute('data-name').toLowerCase();
+      var cat = card.getAttribute('data-category');
+      var price = parseInt(card.getAttribute('data-price'));
+      var eco = parseInt(card.getAttribute('data-eco'));
+      var rating = parseFloat(card.getAttribute('data-rating'));
+
+      var matchCategory = activeCategory === 'all' || cat === activeCategory;
+      var matchSearch = searchTerm === '' || name.indexOf(searchTerm) !== -1;
+      var matchPrice = price <= maxPrice;
+      var matchEco = eco >= minEcoScore;
+      var matchRating = rating >= minRating;
+
+      if (matchCategory && matchSearch && matchPrice && matchEco && matchRating) {
+        card.style.display = '';
+        visible.push(card);
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Sort
+    var sortVal = sortSelect.value;
+    if (sortVal === 'price-low') {
+      visible.sort(function(a, b) { return parseInt(a.getAttribute('data-price')) - parseInt(b.getAttribute('data-price')); });
+    } else if (sortVal === 'price-high') {
+      visible.sort(function(a, b) { return parseInt(b.getAttribute('data-price')) - parseInt(a.getAttribute('data-price')); });
+    } else if (sortVal === 'eco') {
+      visible.sort(function(a, b) { return parseInt(b.getAttribute('data-eco')) - parseInt(a.getAttribute('data-eco')); });
+    } else if (sortVal === 'rating') {
+      visible.sort(function(a, b) { return parseFloat(b.getAttribute('data-rating')) - parseFloat(a.getAttribute('data-rating')); });
+    }
+
+    // Reorder in DOM
+    visible.forEach(function(card) {
+      productGrid.appendChild(card);
+    });
+
+    // No results
+    noResults.style.display = visible.length === 0 ? 'block' : 'none';
+  }
+
+  // Sample reviews data
+  var sampleReviews = [
+    { user: 'Ananya S.', stars: 5, text: 'Absolutely love this product! Great quality and sustainable choice.' },
+    { user: 'Rahul M.', stars: 4, text: 'Very good product. Would definitely recommend to anyone going eco-friendly.' },
+    { user: 'Priya K.', stars: 5, text: 'Best purchase I\'ve made this year. The eco score is well deserved!' }
+  ];
+
+  // Product modal
+  productGrid.addEventListener('click', function(e) {
+    // Handle add to cart button clicks (prevent modal open)
+    if (e.target.closest('.add-to-cart-btn')) {
+      e.stopPropagation();
+      var btn = e.target.closest('.add-to-cart-btn');
+      var originalText = btn.textContent;
+      btn.textContent = '✓ Added!';
+      btn.style.background = '#2e7d32';
+      setTimeout(function() {
+        btn.textContent = originalText;
+        btn.style.background = '';
+      }, 1500);
+      return;
+    }
+
+    var card = e.target.closest('.product-card');
+    if (!card) return;
+
+    var name = card.getAttribute('data-name');
+    var price = card.getAttribute('data-price');
+    var eco = card.getAttribute('data-eco');
+    var rating = card.getAttribute('data-rating');
+    var desc = card.getAttribute('data-desc');
+    var labels = card.getAttribute('data-eco-labels');
+    var reviews = card.getAttribute('data-reviews');
+    var imgDiv = card.querySelector('.product-image');
+    var imgBg = imgDiv.style.background;
+    var imgEmoji = imgDiv.textContent.trim();
+
+    document.getElementById('modalTitle').textContent = name;
+    document.getElementById('modalEcoBadge').textContent = 'Eco Score: ' + eco + '/10';
+    document.getElementById('modalDesc').textContent = desc;
+    document.getElementById('modalPrice').textContent = '₹' + parseInt(price).toLocaleString('en-IN');
+    document.getElementById('modalRating').textContent = rating + ' ★ (' + reviews + ' reviews)';
+
+    var modalImage = document.getElementById('modalImage');
+    modalImage.style.background = imgBg;
+    modalImage.textContent = imgEmoji;
+
+    var badgesHTML = '';
+    if (labels) {
+      labels.split(',').forEach(function(label) {
+        badgesHTML += '<span class="badge" style="background:#e8f5e9; color:#2e7d32; padding:4px 12px; border-radius:8px; font-size:0.8rem; font-weight:600;">' + label.trim() + '</span>';
+      });
+    }
+    document.getElementById('modalBadges').innerHTML = badgesHTML;
+
+    var reviewsHTML = '';
+    sampleReviews.forEach(function(review) {
+      var starsHTML = '';
+      for (var i = 0; i < 5; i++) {
+        starsHTML += i < review.stars ? '★' : '☆';
+      }
+      reviewsHTML += '<div class="card animate-on-scroll" style="padding:12px 16px;">' +
+        '<div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">' +
+        '<strong style="font-size:0.9rem;">' + review.user + '</strong>' +
+        '<span style="color:#f57c00; font-size:0.85rem;">' + starsHTML + '</span>' +
+        '</div>' +
+        '<p style="margin:0; font-size:0.9rem; color:var(--text-muted);">' + review.text + '</p>' +
+        '</div>';
+    });
+    document.getElementById('modalReviews').innerHTML = reviewsHTML;
+
+    // Store current product for modal add to cart
+    document.getElementById('modalAddToCart').setAttribute('data-product', name);
+    productModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+
+  // Modal add to cart
+  document.getElementById('modalAddToCart').addEventListener('click', function() {
+    var btn = this;
+    var originalText = btn.textContent;
+    btn.textContent = '✓ Added to Cart!';
+    btn.style.background = '#2e7d32';
+    setTimeout(function() {
+      btn.textContent = originalText;
+      btn.style.background = '';
+    }, 1500);
+  });
+
+  // Close modal
+  function closeModal() {
+    productModal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  modalClose.addEventListener('click', closeModal);
+  productModal.addEventListener('click', function(e) {
+    if (e.target === productModal) closeModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && productModal.style.display === 'flex') closeModal();
+  });
+
+})();
+</script>
+
+<!-- Main Script -->
+<script src="scripts/main.js"></script>
+
+</body>
+</html>

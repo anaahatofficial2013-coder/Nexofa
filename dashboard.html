@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoSphere - Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    /* ===================== */
+    /* DASHBOARD PAGE STYLES */
+    /* ===================== */
+
+    .dashboard-hero {
+      padding: 2rem 0 1rem;
+    }
+
+    .welcome-card {
+      background: linear-gradient(135deg, #10b981 0%, #22d3ee 100%);
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .welcome-left h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .welcome-left p {
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+
+    .eco-tip {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      max-width: 360px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .eco-tip strong {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.9;
+    }
+
+    /* Score & Stats Row */
+    .score-stats-row {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .eco-score-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .eco-score-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .score-canvas-wrapper {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
+
+    .score-center-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .score-center-text .score-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #10b981;
+      line-height: 1;
+    }
+
+    .score-center-text .score-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .score-breakdown {
+      display: flex;
+      gap: 1.2rem;
+      margin-top: 1rem;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .score-breakdown-item {
+      text-align: center;
+    }
+
+    .score-breakdown-item .label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      display: block;
+    }
+
+    .score-breakdown-item .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Stat Cards */
+    .stat-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .stat-icon.green {
+      background: rgba(16, 185, 129, 0.12);
+    }
+
+    .stat-icon.blue {
+      background: rgba(0, 123, 255, 0.12);
+    }
+
+    .stat-icon.cyan {
+      background: rgba(6, 182, 212, 0.12);
+    }
+
+    .stat-icon.purple {
+      background: rgba(128, 0, 255, 0.12);
+    }
+
+    .stat-info {
+      flex: 1;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    .stat-progress {
+      height: 6px;
+      background: var(--border-color);
+      border-radius: 3px;
+      margin-top: 0.75rem;
+      overflow: hidden;
+    }
+
+    .stat-progress-bar {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    .stat-progress-bar.green {
+      background: linear-gradient(90deg, #10b981, #0891b2);
+    }
+
+    .stat-progress-bar.blue {
+      background: linear-gradient(90deg, #0984e3, #74b9ff);
+    }
+
+    .stat-progress-bar.cyan {
+      background: linear-gradient(90deg, #22d3ee, #34d399);
+    }
+
+    .stat-progress-bar.purple {
+      background: linear-gradient(90deg, #a78bfa, #a29bfe);
+    }
+
+    /* Charts Row */
+    .charts-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .chart-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .chart-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+      color: var(--text-primary);
+    }
+
+    .chart-card .chart-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .chart-canvas-wrapper {
+      position: relative;
+      width: 100%;
+      height: 250px;
+    }
+
+    .chart-canvas-wrapper canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    /* Section Header */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+    }
+
+    .section-header a {
+      color: #10b981;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .section-header a:hover {
+      text-decoration: underline;
+    }
+
+    /* Goals List */
+    .goals-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .goal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s;
+    }
+
+    .goal-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .goal-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .goal-percent {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #10b981;
+    }
+
+    .goal-progress {
+      height: 8px;
+      background: var(--border-color);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .goal-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #22d3ee);
+      border-radius: 4px;
+      transition: width 1s ease;
+    }
+
+    .goal-detail {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 0.5rem;
+    }
+
+    /* Achievements */
+    .achievements-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .achievement-badge {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1 1 200px;
+      max-width: 260px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .achievement-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.15);
+      border-color: #10b981;
+    }
+
+    .achievement-icon {
+      font-size: 2rem;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(16, 185, 129, 0.08);
+      border-radius: 12px;
+    }
+
+    .achievement-info .achievement-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .achievement-info .achievement-date {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 0.15rem;
+    }
+
+    /* Recommendations */
+    .recommendations-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .recommendation-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border-top: 3px solid transparent;
+    }
+
+    .recommendation-card.tip-green {
+      border-top-color: #10b981;
+    }
+
+    .recommendation-card.tip-blue {
+      border-top-color: #0984e3;
+    }
+
+    .recommendation-card.tip-purple {
+      border-top-color: #a78bfa;
+    }
+
+    .recommendation-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .recommendation-emoji {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .recommendation-card h4 {
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+      color: var(--text-primary);
+    }
+
+    .recommendation-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-bottom: 0.75rem;
+    }
+
+    .recommendation-action {
+      color: #10b981;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+
+    .recommendation-action:hover {
+      opacity: 0.75;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .score-stats-row {
+        grid-template-columns: 1fr;
+      }
+
+      .charts-row {
+        grid-template-columns: 1fr;
+      }
+
+      .recommendations-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .welcome-card {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .stat-cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .goals-list {
+        grid-template-columns: 1fr;
+      }
+
+      .recommendations-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .achievements-grid {
+        flex-direction: column;
+      }
+
+      .achievement-badge {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-icon">🌿</div>EcoSphere</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html" class="active">Dashboard</a></li>
+      <li><a href="calculator.html">Track</a></li>
+      <li><a href="challenges.html">Challenges</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="learn.html">Learn</a></li>
+      <li><a href="events.html">Events</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle">☀️</button>
+      <a href="profile.html" class="nav-profile">AS</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Welcome Message -->
+    <section class="dashboard-hero bloom-page-hero">
+      <div class="bloom-page-video-bg"><img src="https://images.pexels.com/photos/1108572/solar-panel-array-sunlight-power-station-1108572.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="Dashboard Hero" /></div>
+      <div class="welcome-card">
+        <div class="welcome-left">
+          <h1>Good Morning, Arjun! 🌅</h1>
+          <p id="dashboardDate"></p>
+        </div>
+        <div class="eco-tip">
+          <strong>💡 Today's Eco Tip</strong>
+          Carry a reusable water bottle and coffee cup. A single reusable bottle can eliminate up to 156 plastic bottles per year!
+        </div>
+      </div>
+    </section>
+
+    <!-- Eco Score & Stat Cards -->
+    <section class="score-stats-row">
+      <!-- Eco Score Card -->
+      <div class="eco-score-card">
+        <h3>Eco Score</h3>
+        <div class="score-canvas-wrapper">
+          <canvas id="ecoScoreChart"></canvas>
+          <div class="score-center-text">
+            <div class="score-number">78</div>
+            <div class="score-label">/ 100</div>
+          </div>
+        </div>
+        <div class="score-breakdown">
+          <div class="score-breakdown-item">
+            <span class="value">82</span>
+            <span class="label">Carbon</span>
+          </div>
+          <div class="score-breakdown-item">
+            <span class="value">75</span>
+            <span class="label">Water</span>
+          </div>
+          <div class="score-breakdown-item">
+            <span class="value">70</span>
+            <span class="label">Energy</span>
+          </div>
+          <div class="score-breakdown-item">
+            <span class="value">85</span>
+            <span class="label">Waste</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Stat Cards -->
+      <div class="stat-cards-grid">
+        <div class="stat-card animate-on-scroll">
+          <div class="stat-card-header">
+            <div class="stat-icon green">🌍</div>
+            <div class="stat-info">
+              <div class="stat-value">2.4 <span style="font-size:0.8rem;font-weight:500;">tons</span></div>
+              <div class="stat-label">Carbon Reduced</div>
+            </div>
+          </div>
+          <div class="stat-progress">
+            <div class="stat-progress-bar green" style="width: 72%;"></div>
+          </div>
+        </div>
+
+        <div class="stat-card animate-on-scroll">
+          <div class="stat-card-header">
+            <div class="stat-icon blue">💧</div>
+            <div class="stat-info">
+              <div class="stat-value">850 <span style="font-size:0.8rem;font-weight:500;">L</span></div>
+              <div class="stat-label">Water Saved</div>
+            </div>
+          </div>
+          <div class="stat-progress">
+            <div class="stat-progress-bar blue" style="width: 60%;"></div>
+          </div>
+        </div>
+
+        <div class="stat-card animate-on-scroll">
+          <div class="stat-card-header">
+            <div class="stat-icon cyan">⚡</div>
+            <div class="stat-info">
+              <div class="stat-value">120 <span style="font-size:0.8rem;font-weight:500;">kWh</span></div>
+              <div class="stat-label">Energy Saved</div>
+            </div>
+          </div>
+          <div class="stat-progress">
+            <div class="stat-progress-bar cyan" style="width: 55%;"></div>
+          </div>
+        </div>
+
+        <div class="stat-card animate-on-scroll">
+          <div class="stat-card-header">
+            <div class="stat-icon purple">♻️</div>
+            <div class="stat-info">
+              <div class="stat-value">45 <span style="font-size:0.8rem;font-weight:500;">kg</span></div>
+              <div class="stat-label">Waste Recycled</div>
+            </div>
+          </div>
+          <div class="stat-progress">
+            <div class="stat-progress-bar purple" style="width: 48%;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Weekly Progress & Monthly Comparison Charts -->
+    <section class="charts-row">
+      <div class="chart-card">
+        <h3>Weekly Progress</h3>
+        <p class="chart-subtitle">Your eco-activity this week</p>
+        <div class="chart-canvas-wrapper">
+          <canvas id="weeklyChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3>Monthly Comparison</h3>
+        <p class="chart-subtitle">This month vs last month</p>
+        <div class="chart-canvas-wrapper">
+          <canvas id="monthlyChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Current Goals -->
+    <section>
+      <div class="section-header">
+        <h2>Current Goals</h2>
+        <a href="challenges.html">View All →</a>
+      </div>
+      <div class="goals-list">
+        <div class="goal-card">
+          <div class="goal-header">
+            <span class="goal-title">🌍 Reduce Carbon by 20%</span>
+            <span class="goal-percent">75%</span>
+          </div>
+          <div class="goal-progress">
+            <div class="goal-progress-bar" style="width: 75%;"></div>
+          </div>
+          <div class="goal-detail">1.5 of 2.0 tons target — on track</div>
+        </div>
+
+        <div class="goal-card">
+          <div class="goal-header">
+            <span class="goal-title">💧 Save 2000L Water</span>
+            <span class="goal-percent">60%</span>
+          </div>
+          <div class="goal-progress">
+            <div class="goal-progress-bar" style="width: 60%;"></div>
+          </div>
+          <div class="goal-detail">1200 of 2000L — 5 days left</div>
+        </div>
+
+        <div class="goal-card">
+          <div class="goal-header">
+            <span class="goal-title">🏆 Complete 10 Challenges</span>
+            <span class="goal-percent">80%</span>
+          </div>
+          <div class="goal-progress">
+            <div class="goal-progress-bar" style="width: 80%;"></div>
+          </div>
+          <div class="goal-detail">8 of 10 done — almost there!</div>
+        </div>
+
+        <div class="goal-card">
+          <div class="goal-header">
+            <span class="goal-title">🗑️ Zero Waste Week</span>
+            <span class="goal-percent">40%</span>
+          </div>
+          <div class="goal-progress">
+            <div class="goal-progress-bar" style="width: 40%;"></div>
+          </div>
+          <div class="goal-detail">Day 3 of 7 — keep going!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Achievements -->
+    <section style="margin-top: 2rem;">
+      <div class="section-header">
+        <h2>Recent Achievements</h2>
+      </div>
+      <div class="achievements-grid">
+        <div class="achievement-badge">
+          <div class="achievement-icon">🏆</div>
+          <div class="achievement-info">
+            <div class="achievement-name">Eco Warrior</div>
+            <div class="achievement-date">Earned Aug 12, 2026</div>
+          </div>
+        </div>
+
+        <div class="achievement-badge">
+          <div class="achievement-icon">💧</div>
+          <div class="achievement-info">
+            <div class="achievement-name">Water Saver</div>
+            <div class="achievement-date">Earned Aug 10, 2026</div>
+          </div>
+        </div>
+
+        <div class="achievement-badge">
+          <div class="achievement-icon">🔥</div>
+          <div class="achievement-info">
+            <div class="achievement-name">7-Day Streak</div>
+            <div class="achievement-date">Earned Aug 8, 2026</div>
+          </div>
+        </div>
+
+        <div class="achievement-badge">
+          <div class="achievement-icon">✅</div>
+          <div class="achievement-info">
+            <div class="achievement-name">First Challenge</div>
+            <div class="achievement-date">Earned Jul 28, 2026</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Personalized Recommendations -->
+    <section style="margin-top: 2rem; margin-bottom: 2rem;">
+      <div class="section-header">
+        <h2>Personalized Recommendations</h2>
+      </div>
+      <div class="recommendations-grid">
+        <div class="recommendation-card tip-green">
+          <div class="recommendation-emoji">🚲</div>
+          <h4>Try Cycling to Campus</h4>
+          <p>Based on your commute data, switching to cycling 3 days a week could reduce your transport carbon footprint by 35%.</p>
+          <a href="challenges.html" class="recommendation-action">Start Challenge →</a>
+        </div>
+
+        <div class="recommendation-card tip-blue">
+          <div class="recommendation-emoji">🥗</div>
+          <h4>Meatless Mondays</h4>
+          <p>You logged 4 meat-heavy meals this week. Going meatless just one day a week saves ~100kg CO₂ per year.</p>
+          <a href="calculator.html" class="recommendation-action">Track Meals →</a>
+        </div>
+
+        <div class="recommendation-card tip-purple">
+          <div class="recommendation-emoji">🔌</div>
+          <h4>Unplug Idle Devices</h4>
+          <p>Your energy log shows high overnight consumption. Unplugging chargers and devices could save 8 kWh/month.</p>
+          <a href="calculator.html" class="recommendation-action">Log Energy →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo"><div class="nav-logo-icon">🌿</div>EcoSphere</div>
+        <p>Empowering students and communities to understand and improve their environmental impact through intelligent tracking and gamification.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="calculator.html">Carbon Calculator</a>
+        <a href="challenges.html">Challenges</a>
+        <a href="marketplace.html">Marketplace</a>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="community.html">Feed</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="events.html">Events</a>
+        <a href="learn.html">Learning Hub</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About</a>
+        <a href="impact.html">Impact Reports</a>
+        <a href="profile.html">Profile</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 EcoSphere. All rights reserved.</span>
+      <span>Built with 💚 for TechManthan</span>
+    </div>
+  </footer>
+
+  <script src="scripts/main.js"></script>
+  <script>
+    window.addEventListener('load', function () {
+      // Set today's date
+      var dateEl = document.getElementById('dashboardDate');
+      if (dateEl) {
+        var now = new Date();
+        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateEl.textContent = now.toLocaleDateString('en-US', options);
+      }
+
+      // Draw Eco Score radial progress
+      if (typeof drawRadialProgress === 'function') {
+        drawRadialProgress('ecoScoreChart', 78, 100, '#10b981');
+      }
+
+      // Draw Weekly bar chart
+      if (typeof drawBarChart === 'function') {
+        drawBarChart(
+          'weeklyChart',
+          ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          [12, 19, 15, 22, 18, 25, 14],
+          ['#10b981', '#22d3ee', '#10b981', '#22d3ee', '#10b981', '#22d3ee', '#10b981']
+        );
+      }
+
+      // Draw Monthly Comparison line chart
+      if (typeof drawLineChart === 'function') {
+        drawLineChart(
+          'monthlyChart',
+          ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+          {
+            'This Month': [45, 62, 58, 78],
+            'Last Month': [38, 50, 55, 60]
+          },
+          {
+            'This Month': '#10b981',
+            'Last Month': '#a78bfa'
+          }
+        );
+      }
+    });
+  </script>
+
+</body>
+</html>

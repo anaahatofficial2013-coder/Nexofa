@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoSphere - Profile & Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    /* ==================== PROFILE PAGE ==================== */
+
+    .profile-page-header {
+      padding: 48px 40px 0;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .profile-page-header .section-badge {
+      margin-bottom: 12px;
+    }
+
+    .profile-page-header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .profile-page-header > p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 600px;
+    }
+
+    /* ==================== TWO COLUMN LAYOUT ==================== */
+
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      max-width: 1280px;
+      margin: 32px auto 0;
+      padding: 0 40px 60px;
+      align-items: start;
+    }
+
+    .profile-left {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .profile-right {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: sticky;
+      top: calc(var(--nav-height) + 24px);
+    }
+
+    /* ==================== PROFILE HEADER CARD ==================== */
+
+    .profile-header-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-header-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      background: var(--gradient-1);
+      opacity: 0.12;
+    }
+
+    .profile-avatar-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-top: 20px;
+      margin-bottom: 16px;
+    }
+
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-full);
+      background: var(--gradient-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      border: 4px solid var(--bg-primary);
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-online-dot {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 14px;
+      height: 14px;
+      background: #10b981;
+      border: 3px solid var(--bg-primary);
+      border-radius: var(--radius-full);
+      z-index: 2;
+    }
+
+    .profile-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .profile-bio {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .profile-meta {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .profile-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .profile-meta-item span {
+      font-weight: 500;
+    }
+
+    /* ==================== ECO SCORE & LEVEL CARD ==================== */
+
+    .eco-score-level-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .eco-score-level-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 24px;
+      color: var(--text-primary);
+    }
+
+    .radial-progress-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .radial-label-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .radial-label-overlay .radial-value {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .radial-label-overlay .radial-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .level-info {
+      text-align: center;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .level-name {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 2px;
+    }
+
+    .level-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .xp-section {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .xp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .xp-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .xp-value {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .xp-bar {
+      width: 100%;
+      height: 10px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .xp-bar-fill {
+      height: 100%;
+      border-radius: var(--radius-full);
+      background: var(--gradient-1);
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ==================== ACHIEVEMENTS SECTION ==================== */
+
+    .achievements-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      backdrop-filter: blur(10px);
+    }
+
+    .achievements-section h3 {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .achievements-section h3 .badge {
+      font-size: 0.75rem;
+    }
+
+    .achievements-grid-profile {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .achievement-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 12px;
+      text-align: center;
+      transition: all var(--transition);
+      position: relative;
+    }
+
+    .achievement-item:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .achievement-item.unearned {
+      opacity: 0.45;
+      filter: grayscale(0.6);
+    }
+
+    .achievement-item.unearned:hover {
+      opacity: 0.6;
+      filter: grayscale(0.3);
+    }
+
+    .achievement-item-icon {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      display: block;
+      line-height: 1;
+    }
+
+    .achievement-item-name {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .achievement-item.unearned .achievement-item-name {
+      color: var(--text-muted);
+    }
+
+    .achievement-earned-check {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 18px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+    }
+
+    /* ==================== COMPLETED CHALLENGES SUMMARY ==================== */
+
+    .completed-summary-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      backdrop-filter: blur(10px);
+    }
+
+    .completed-summary-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .completed-summary-header h3 {
+      font-size: 1.1rem;
+      color: var(--text-primary);
+    }
+
+    .completed-count {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .completed-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .completed-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      transition: all var(--transition);
+    }
+
+    .completed-item:hover {
+      border-color: rgba(16, 185, 129, 0.3);
+      background: var(--bg-card);
+    }
+
+    .completed-item-check {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-full);
+      background: rgba(16, 185, 129, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .completed-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .completed-item-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .completed-item-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .completed-item-xp {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+
+    .view-all-link {
+      display: block;
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary);
+      transition: color var(--transition);
+    }
+
+    .view-all-link:hover {
+      color: var(--primary-dark);
+    }
+
+    /* ==================== PERSONAL STATISTICS GRID ==================== */
+
+    .personal-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .personal-stat-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px 16px;
+      text-align: center;
+      transition: all var(--transition);
+    }
+
+    .personal-stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .personal-stat-icon {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .personal-stat-value {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+      line-height: 1.2;
+    }
+
+    .personal-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ==================== SETTINGS CARD ==================== */
+
+    .settings-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      backdrop-filter: blur(10px);
+    }
+
+    .settings-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .settings-card > p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .settings-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-secondary);
+      padding: 4px;
+      border-radius: var(--radius-full);
+      margin-bottom: 28px;
+      overflow-x: auto;
+    }
+
+    .settings-tab-btn {
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all var(--transition);
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .settings-tab-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .settings-tab-btn.active {
+      background: var(--bg-primary);
+      color: var(--primary);
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .settings-panel {
+      display: none;
+    }
+
+    .settings-panel.active {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    /* ==================== FORM STYLES ==================== */
+
+    .settings-form .form-group {
+      margin-bottom: 20px;
+    }
+
+    .settings-form .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .settings-form .form-input,
+    .settings-form textarea.form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      transition: all var(--transition);
+      outline: none;
+    }
+
+    .settings-form textarea.form-input {
+      resize: vertical;
+      min-height: 80px;
+      font-family: var(--font-main);
+    }
+
+    .settings-form .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ==================== AVATAR SELECTOR ==================== */
+
+    .avatar-selector {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .avatar-option {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      border: 3px solid transparent;
+      position: relative;
+    }
+
+    .avatar-option:hover {
+      transform: scale(1.1);
+    }
+
+    .avatar-option.selected {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+      transform: scale(1.1);
+    }
+
+    .avatar-option.selected::after {
+      content: '✓';
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 18px;
+      height: 18px;
+      background: var(--primary);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.55rem;
+      font-weight: 700;
+      border: 2px solid var(--bg-primary);
+    }
+
+    .avatar-gradient-1 { background: linear-gradient(135deg, #10b981, #22d3ee); }
+    .avatar-gradient-2 { background: linear-gradient(135deg, #b388ff, #a29bfe); }
+    .avatar-gradient-3 { background: linear-gradient(135deg, #fd79a8, #e84393); }
+    .avatar-gradient-4 { background: linear-gradient(135deg, #fdcb6e, #f472b6); }
+    .avatar-gradient-5 { background: linear-gradient(135deg, #0984e3, #74b9ff); }
+
+    /* ==================== TOGGLE SWITCH ==================== */
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .toggle-row:last-child {
+      border-bottom: none;
+    }
+
+    .toggle-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .toggle-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .toggle-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: var(--radius-full);
+      background: #fff;
+      top: 2px;
+      left: 3px;
+      transition: all var(--transition);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(21px);
+    }
+
+    /* ==================== RADIO GROUP ==================== */
+
+    .radio-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--transition);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .radio-option:hover {
+      border-color: var(--primary);
+      color: var(--text-primary);
+    }
+
+    .radio-option.selected {
+      border-color: var(--primary);
+      background: rgba(16, 185, 129, 0.08);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .radio-option input {
+      display: none;
+    }
+
+    .radio-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+      flex-shrink: 0;
+    }
+
+    .radio-option.selected .radio-dot {
+      border-color: var(--primary);
+    }
+
+    .radio-dot::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-full);
+      background: var(--primary);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .radio-option.selected .radio-dot::after {
+      opacity: 1;
+    }
+
+    /* ==================== CHECKBOX ==================== */
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+    }
+
+    .custom-checkbox {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    .checkbox-visual {
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--border-color);
+      border-radius: 5px;
+      background: var(--bg-primary);
+      cursor: pointer;
+      transition: all var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .checkbox-visual::after {
+      content: '✓';
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #fff;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .custom-checkbox input:checked + .checkbox-visual {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .custom-checkbox input:checked + .checkbox-visual::after {
+      opacity: 1;
+    }
+
+    .checkbox-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    /* ==================== THEME PREVIEW ==================== */
+
+    .theme-options {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .theme-option {
+      flex: 1;
+      min-width: 120px;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      background: var(--bg-secondary);
+    }
+
+    .theme-option:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .theme-option.selected {
+      border-color: var(--primary);
+      background: rgba(16, 185, 129, 0.06);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    .theme-preview-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-full);
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .theme-preview-light {
+      background: linear-gradient(135deg, #f8fafb, #ffffff);
+      border: 2px solid #e2e8f0;
+    }
+
+    .theme-preview-dark {
+      background: linear-gradient(135deg, #0a0f1a, #0d1b2a);
+      border: 2px solid #1b2838;
+    }
+
+    .theme-preview-auto {
+      background: linear-gradient(135deg, #f8fafb 50%, #0d1b2a 50%);
+      border: 2px solid #a0aec0;
+    }
+
+    .theme-option-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .theme-option-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .theme-current-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      background: rgba(16, 185, 129, 0.12);
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-top: 12px;
+    }
+
+    /* ==================== PASSWORD FIELDS ==================== */
+
+    .password-field {
+      position: relative;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 4px;
+      transition: color var(--transition);
+    }
+
+    .password-toggle:hover {
+      color: var(--primary);
+    }
+
+    /* ==================== DANGER ZONE ==================== */
+
+    .danger-zone {
+      border: 1px solid rgba(231, 76, 60, 0.25);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-top: 8px;
+      background: rgba(231, 76, 60, 0.04);
+    }
+
+    .danger-zone h4 {
+      font-size: 0.95rem;
+      color: #e74c3c;
+      margin-bottom: 6px;
+    }
+
+    .danger-zone p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .btn-danger {
+      background: rgba(231, 76, 60, 0.12);
+      color: #e74c3c;
+      border: 1px solid rgba(231, 76, 60, 0.25);
+      padding: 10px 24px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .btn-danger:hover {
+      background: #e74c3c;
+      color: #fff;
+    }
+
+    /* ==================== TWO FACTOR ==================== */
+
+    .tfa-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tfa-info {
+      flex: 1;
+    }
+
+    .tfa-info .tfa-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .tfa-info .tfa-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .tfa-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .tfa-status.enabled {
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--primary);
+    }
+
+    .tfa-status.disabled {
+      background: rgba(160, 174, 192, 0.12);
+      color: var(--text-muted);
+    }
+
+    /* ==================== SECTION SPACERS ==================== */
+
+    .profile-section-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    /* ==================== DELETE CONFIRMATION MODAL ==================== */
+
+    .delete-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+    }
+
+    .delete-modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .delete-modal {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform var(--transition);
+    }
+
+    .delete-modal-overlay.active .delete-modal {
+      transform: scale(1);
+    }
+
+    .delete-modal-icon {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .delete-modal h3 {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .delete-modal p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .delete-modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn-cancel {
+      padding: 10px 24px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .btn-cancel:hover {
+      border-color: var(--text-muted);
+      color: var(--text-primary);
+    }
+
+    .btn-delete-confirm {
+      padding: 10px 24px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: #fff;
+      background: #e74c3c;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .btn-delete-confirm:hover {
+      background: #c0392b;
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+
+    @media (max-width: 1024px) {
+      .achievements-grid-profile {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .profile-layout {
+        grid-template-columns: 1fr;
+        padding: 0 20px 40px;
+      }
+
+      .profile-page-header {
+        padding: 40px 20px 0;
+      }
+
+      .profile-right {
+        position: static;
+      }
+
+      .achievements-grid-profile {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .personal-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .theme-options {
+        flex-direction: column;
+      }
+
+      .settings-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .radio-group {
+        flex-direction: column;
+      }
+
+      .radio-option {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .achievements-grid-profile {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .personal-stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-meta {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .delete-modal-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo"><div class="nav-logo-icon">🌿</div>EcoSphere</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="calculator.html">Track</a></li>
+      <li><a href="challenges.html">Challenges</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="learn.html">Learn</a></li>
+      <li><a href="events.html">Events</a></li>
+    </ul>
+    <div class="nav-right"><button class="theme-toggle" id="themeToggle">☀️</button><a href="profile.html" class="nav-profile">AS</a></div>
+    <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="main-content">
+    <!-- Page Header -->
+    <div class="profile-page-header animate-on-scroll bloom-page-hero">
+      <div class="bloom-page-video-bg"><img src="https://images.pexels.com/photos/4350055/pexels-photo-4350055.jpeg?auto=compress&cs=tinysrgb&w=1920" alt="Profile Hero" /></div>
+      <div class="section-badge">👤 Profile & Settings</div>
+      <h1>Your EcoSphere Profile</h1>
+      <p>Manage your profile, track achievements, and customize your experience.</p>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="profile-layout">
+
+      <!-- ========== LEFT COLUMN ========== -->
+      <div class="profile-left">
+
+        <!-- Profile Header Card -->
+        <div class="profile-header-card animate-on-scroll">
+          <div class="profile-avatar-wrapper">
+            <div class="profile-avatar">AS</div>
+            <div class="profile-online-dot"></div>
+          </div>
+          <div class="profile-name">Arjun Sharma</div>
+          <div class="profile-bio">Eco-warrior | Saving the planet one step at a time 🌿</div>
+          <div class="profile-meta">
+            <div class="profile-meta-item">📍 <span>Mumbai, India</span></div>
+            <div class="profile-meta-item">🗓️ <span>Member since Jan 2025</span></div>
+          </div>
+        </div>
+
+        <!-- Eco Score & Level Card -->
+        <div class="eco-score-level-card animate-on-scroll">
+          <h3>Eco Score & Level</h3>
+          <div class="radial-progress-wrapper">
+            <canvas id="profileRadial" width="140" height="140"></canvas>
+            <div class="radial-label-overlay">
+              <div class="radial-value">78</div>
+              <div class="radial-sub">/ 100</div>
+            </div>
+          </div>
+          <div class="level-info">
+            <div class="level-name">Eco Champion</div>
+            <div class="level-sub">Level 7</div>
+          </div>
+          <div class="xp-section">
+            <div class="xp-header">
+              <span class="xp-label">Progress to Level 8</span>
+              <span class="xp-value">2,450 / 3,000 XP</span>
+            </div>
+            <div class="xp-bar">
+              <div class="xp-bar-fill" style="width: 0" data-progress="81.7"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Achievements Section -->
+        <div class="achievements-section animate-on-scroll">
+          <h3>
+            Achievements
+            <span class="badge badge-green">6 of 8 Earned</span>
+          </h3>
+          <div class="achievements-grid-profile">
+            <!-- Earned -->
+            <div class="achievement-item">
+              <div class="achievement-earned-check">✓</div>
+              <span class="achievement-item-icon">✅</span>
+              <div class="achievement-item-name">First Challenge</div>
+            </div>
+            <div class="achievement-item">
+              <div class="achievement-earned-check">✓</div>
+              <span class="achievement-item-icon">🔥</span>
+              <div class="achievement-item-name">7-Day Streak</div>
+            </div>
+            <div class="achievement-item">
+              <div class="achievement-earned-check">✓</div>
+              <span class="achievement-item-icon">🏆</span>
+              <div class="achievement-item-name">Eco Warrior</div>
+            </div>
+            <div class="achievement-item">
+              <div class="achievement-earned-check">✓</div>
+              <span class="achievement-item-icon">🚫</span>
+              <div class="achievement-item-name">Plastic Free Hero</div>
+            </div>
+            <div class="achievement-item">
+              <div class="achievement-earned-check">✓</div>
+              <span class="achievement-item-icon">💧</span>
+              <div class="achievement-item-name">Water Champion</div>
+            </div>
+            <div class="achievement-item">
+              <div class="achievement-earned-check">✓</div>
+              <span class="achievement-item-icon">⚡</span>
+              <div class="achievement-item-name">Energy Expert</div>
+            </div>
+            <!-- Unearned -->
+            <div class="achievement-item unearned">
+              <span class="achievement-item-icon">♻️</span>
+              <div class="achievement-item-name">Recycling Pro</div>
+            </div>
+            <div class="achievement-item unearned">
+              <span class="achievement-item-icon">⭐</span>
+              <div class="achievement-item-name">Community Star</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Completed Challenges Summary -->
+        <div class="completed-summary-card animate-on-scroll">
+          <div class="completed-summary-header">
+            <h3>Completed Challenges</h3>
+            <div class="completed-count">24</div>
+          </div>
+          <div class="completed-list">
+            <div class="completed-item">
+              <div class="completed-item-check">✓</div>
+              <div class="completed-item-info">
+                <div class="completed-item-name">Zero Waste Week</div>
+                <div class="completed-item-date">Completed Aug 14, 2026</div>
+              </div>
+              <div class="completed-item-xp">+150 XP</div>
+            </div>
+            <div class="completed-item">
+              <div class="completed-item-check">✓</div>
+              <div class="completed-item-info">
+                <div class="completed-item-name">Bike to Campus Month</div>
+                <div class="completed-item-date">Completed Aug 10, 2026</div>
+              </div>
+              <div class="completed-item-xp">+200 XP</div>
+            </div>
+            <div class="completed-item">
+              <div class="completed-item-check">✓</div>
+              <div class="completed-item-info">
+                <div class="completed-item-name">Plant 10 Trees</div>
+                <div class="completed-item-date">Completed Aug 6, 2026</div>
+              </div>
+              <div class="completed-item-xp">+300 XP</div>
+            </div>
+          </div>
+          <a href="challenges.html" class="view-all-link">View All Challenges →</a>
+        </div>
+
+        <!-- Personal Statistics -->
+        <div class="achievements-section animate-on-scroll">
+          <h3>Personal Statistics</h3>
+          <div class="personal-stats-grid">
+            <div class="personal-stat-card">
+              <span class="personal-stat-icon">🌍</span>
+              <div class="personal-stat-value" data-count="12" data-suffix=".4 tons">0</div>
+              <div class="personal-stat-label">Total CO₂ Reduced</div>
+            </div>
+            <div class="personal-stat-card">
+              <span class="personal-stat-icon">💧</span>
+              <div class="personal-stat-value" data-count="4250" data-suffix="L">0</div>
+              <div class="personal-stat-label">Water Saved</div>
+            </div>
+            <div class="personal-stat-card">
+              <span class="personal-stat-icon">⚡</span>
+              <div class="personal-stat-value" data-count="890" data-suffix=" kWh">0</div>
+              <div class="personal-stat-label">Energy Saved</div>
+            </div>
+            <div class="personal-stat-card">
+              <span class="personal-stat-icon">♻️</span>
+              <div class="personal-stat-value" data-count="210" data-suffix=" kg">0</div>
+              <div class="personal-stat-label">Waste Recycled</div>
+            </div>
+            <div class="personal-stat-card">
+              <span class="personal-stat-icon">✅</span>
+              <div class="personal-stat-value" data-count="24">0</div>
+              <div class="personal-stat-label">Challenges Completed</div>
+            </div>
+            <div class="personal-stat-card">
+              <span class="personal-stat-icon">📅</span>
+              <div class="personal-stat-value" data-count="8">0</div>
+              <div class="personal-stat-label">Events Attended</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== RIGHT COLUMN — SETTINGS ========== -->
+      <div class="profile-right">
+
+        <div class="settings-card animate-on-scroll">
+          <h3>Settings</h3>
+          <p>Customize your EcoSphere experience.</p>
+
+          <!-- Settings Tabs -->
+          <div class="settings-tabs" id="settingsTabs">
+            <button class="settings-tab-btn active" data-tab="settings-personal">Personal Info</button>
+            <button class="settings-tab-btn" data-tab="settings-notifications">Notifications</button>
+            <button class="settings-tab-btn" data-tab="settings-privacy">Privacy</button>
+            <button class="settings-tab-btn" data-tab="settings-theme">Theme</button>
+            <button class="settings-tab-btn" data-tab="settings-account">Account</button>
+          </div>
+
+          <!-- Personal Info Tab -->
+          <div class="settings-panel active" id="settings-personal">
+            <form class="settings-form" id="personalInfoForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="text" id="username" class="form-input" value="Arjun Sharma" />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" class="form-input" value="arjun@ecosphere.com" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="bio">Bio</label>
+                <textarea id="bio" class="form-input" rows="3">Eco-warrior | Saving the planet one step at a time 🌿</textarea>
+              </div>
+              <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" class="form-input" value="Mumbai, India" />
+              </div>
+              <div class="form-group">
+                <label>Avatar</label>
+                <div class="avatar-selector" id="avatarSelector">
+                  <div class="avatar-option avatar-gradient-1 selected" data-avatar="1" title="Green">AS</div>
+                  <div class="avatar-option avatar-gradient-2" data-avatar="2" title="Purple">AS</div>
+                  <div class="avatar-option avatar-gradient-3" data-avatar="3" title="Pink">AS</div>
+                  <div class="avatar-option avatar-gradient-4" data-avatar="4" title="Orange">AS</div>
+                  <div class="avatar-option avatar-gradient-5" data-avatar="5" title="Blue">AS</div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" style="margin-top: 8px;">Save Changes</button>
+            </form>
+          </div>
+
+          <!-- Notifications Tab -->
+          <div class="settings-panel" id="settings-notifications">
+            <div class="profile-section-title">Email Notifications</div>
+
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-label">Email Notifications</div>
+                <div class="toggle-desc">Receive updates and alerts via email</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-label">Challenge Reminders</div>
+                <div class="toggle-desc">Get reminded about active challenges</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-label">Community Updates</div>
+                <div class="toggle-desc">New posts and replies from the community</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-label">Event Notifications</div>
+                <div class="toggle-desc">Upcoming events and registrations</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-label">Weekly Report</div>
+                <div class="toggle-desc">Your environmental impact summary</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <div class="toggle-label">Achievement Alerts</div>
+                <div class="toggle-desc">Celebrate when you earn new badges</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" checked />
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+
+            <button type="button" class="btn btn-primary" style="margin-top: 20px;" onclick="showToast('Notification preferences saved!')">Save Preferences</button>
+          </div>
+
+          <!-- Privacy Tab -->
+          <div class="settings-panel" id="settings-privacy">
+            <div class="profile-section-title">Profile Visibility</div>
+
+            <div class="form-group">
+              <label>Who can see your profile?</label>
+              <div class="radio-group" id="visibilityGroup">
+                <label class="radio-option selected" data-value="public">
+                  <input type="radio" name="visibility" value="public" checked />
+                  <span class="radio-dot"></span>
+                  Public
+                </label>
+                <label class="radio-option" data-value="friends">
+                  <input type="radio" name="visibility" value="friends" />
+                  <span class="radio-dot"></span>
+                  Friends
+                </label>
+                <label class="radio-option" data-value="private">
+                  <input type="radio" name="visibility" value="private" />
+                  <span class="radio-dot"></span>
+                  Private
+                </label>
+              </div>
+            </div>
+
+            <div class="profile-section-title" style="margin-top: 24px;">Display Options</div>
+
+            <div class="checkbox-row">
+              <label class="custom-checkbox">
+                <input type="checkbox" checked />
+                <span class="checkbox-visual"></span>
+              </label>
+              <span class="checkbox-label">Show on leaderboard</span>
+            </div>
+
+            <div class="checkbox-row">
+              <label class="custom-checkbox">
+                <input type="checkbox" checked />
+                <span class="checkbox-visual"></span>
+              </label>
+              <span class="checkbox-label">Show eco score</span>
+            </div>
+
+            <div class="checkbox-row">
+              <label class="custom-checkbox">
+                <input type="checkbox" />
+                <span class="checkbox-visual"></span>
+              </label>
+              <span class="checkbox-label">Share activity with community</span>
+            </div>
+
+            <button type="button" class="btn btn-primary" style="margin-top: 20px;" onclick="showToast('Privacy settings updated!')">Save Privacy Settings</button>
+          </div>
+
+          <!-- Theme Tab -->
+          <div class="settings-panel" id="settings-theme">
+            <div class="profile-section-title">Appearance</div>
+
+            <div class="theme-options" id="themeOptions">
+              <div class="theme-option" data-theme-choice="light">
+                <div class="theme-preview-circle theme-preview-light">☀️</div>
+                <div class="theme-option-name">Light</div>
+                <div class="theme-option-desc">Clean and bright</div>
+              </div>
+              <div class="theme-option" data-theme-choice="dark">
+                <div class="theme-preview-circle theme-preview-dark">🌙</div>
+                <div class="theme-option-name">Dark</div>
+                <div class="theme-option-desc">Easy on the eyes</div>
+              </div>
+              <div class="theme-option" data-theme-choice="auto">
+                <div class="theme-preview-circle theme-preview-auto">🖥️</div>
+                <div class="theme-option-name">Auto</div>
+                <div class="theme-option-desc">Match system</div>
+              </div>
+            </div>
+            <div class="text-center">
+              <span class="theme-current-label" id="themeCurrentLabel">● Current theme: Dark</span>
+            </div>
+          </div>
+
+          <!-- Account Tab -->
+          <div class="settings-panel" id="settings-account">
+            <div class="profile-section-title">Change Password</div>
+            <form class="settings-form" id="passwordForm">
+              <div class="form-group">
+                <label for="currentPassword">Current Password</label>
+                <div class="password-field">
+                  <input type="password" id="currentPassword" class="form-input" placeholder="Enter current password" />
+                  <button type="button" class="password-toggle" onclick="togglePasswordVisibility('currentPassword', this)">👁️</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <div class="password-field">
+                  <input type="password" id="newPassword" class="form-input" placeholder="Enter new password" />
+                  <button type="button" class="password-toggle" onclick="togglePasswordVisibility('newPassword', this)">👁️</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirm New Password</label>
+                <div class="password-field">
+                  <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm new password" />
+                  <button type="button" class="password-toggle" onclick="togglePasswordVisibility('confirmPassword', this)">👁️</button>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Update Password</button>
+            </form>
+
+            <div class="profile-section-title" style="margin-top: 32px;">Two-Factor Authentication</div>
+            <div class="toggle-row">
+              <div class="tfa-info">
+                <div class="tfa-label">Two-Factor Authentication</div>
+                <div class="tfa-desc">Add an extra layer of security to your account</div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span class="tfa-status enabled" id="tfaStatus">● Enabled</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="tfaToggle" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="profile-section-title" style="margin-top: 32px;">Danger Zone</div>
+            <div class="danger-zone">
+              <h4>Delete Account</h4>
+              <p>Permanently delete your EcoSphere account and all associated data. This action cannot be undone.</p>
+              <button type="button" class="btn-danger" id="deleteAccountBtn">Delete My Account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==================== DELETE CONFIRMATION MODAL ==================== -->
+  <div class="delete-modal-overlay" id="deleteModal">
+    <div class="delete-modal">
+      <span class="delete-modal-icon">⚠️</span>
+      <h3>Delete Your Account?</h3>
+      <p>This will permanently remove your profile, data, achievements, and all associated content. This action cannot be undone.</p>
+      <div class="delete-modal-actions">
+        <button class="btn-cancel" id="deleteCancelBtn">Cancel</button>
+        <button class="btn-delete-confirm" id="deleteConfirmBtn">Yes, Delete Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="nav-logo"><div class="nav-logo-icon">🌿</div>EcoSphere</div><p>Empowering students and communities to understand and improve their environmental impact.</p></div>
+      <div class="footer-col"><h4>Platform</h4><a href="dashboard.html">Dashboard</a><a href="calculator.html">Carbon Calculator</a><a href="challenges.html">Challenges</a><a href="marketplace.html">Marketplace</a></div>
+      <div class="footer-col"><h4>Community</h4><a href="community.html">Feed</a><a href="leaderboard.html">Leaderboard</a><a href="events.html">Events</a><a href="learn.html">Learning Hub</a></div>
+      <div class="footer-col"><h4>Company</h4><a href="about.html">About</a><a href="impact.html">Impact Reports</a><a href="profile.html">Profile</a><a href="#">Privacy Policy</a></div>
+    </div>
+    <div class="footer-bottom"><span>&copy; 2026 EcoSphere. All rights reserved.</span><span>Built with 💚 for TechManthan</span></div>
+  </footer>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script src="scripts/main.js"></script>
+  <script>
+    // ==================== SETTINGS TABS ====================
+    (function() {
+      var settingsTabs = document.querySelectorAll('#settingsTabs .settings-tab-btn');
+      var settingsPanels = document.querySelectorAll('.settings-panel');
+
+      settingsTabs.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          settingsTabs.forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+
+          var targetId = btn.getAttribute('data-tab');
+          settingsPanels.forEach(function(panel) {
+            panel.classList.remove('active');
+          });
+          var targetPanel = document.getElementById(targetId);
+          if (targetPanel) targetPanel.classList.add('active');
+        });
+      });
+    })();
+
+    // ==================== AVATAR SELECTOR ====================
+    (function() {
+      var avatarOptions = document.querySelectorAll('#avatarSelector .avatar-option');
+
+      avatarOptions.forEach(function(option) {
+        option.addEventListener('click', function() {
+          avatarOptions.forEach(function(o) { o.classList.remove('selected'); });
+          option.classList.add('selected');
+
+          var avatarGradients = {
+            '1': 'linear-gradient(135deg, #10b981, #22d3ee)',
+            '2': 'linear-gradient(135deg, #b388ff, #a29bfe)',
+            '3': 'linear-gradient(135deg, #fd79a8, #e84393)',
+            '4': 'linear-gradient(135deg, #fdcb6e, #f472b6)',
+            '5': 'linear-gradient(135deg, #0984e3, #74b9ff)'
+          };
+
+          var avatarNum = option.getAttribute('data-avatar');
+          var mainAvatar = document.querySelector('.profile-avatar');
+          var navAvatar = document.querySelector('.nav-profile');
+
+          if (mainAvatar && avatarGradients[avatarNum]) {
+            mainAvatar.style.background = avatarGradients[avatarNum];
+          }
+          if (navAvatar && avatarGradients[avatarNum]) {
+            navAvatar.style.background = avatarGradients[avatarNum];
+          }
+        });
+      });
+    })();
+
+    // ==================== PERSONAL INFO FORM ====================
+    (function() {
+      var form = document.getElementById('personalInfoForm');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var name = document.getElementById('username').value;
+          var bio = document.getElementById('bio').value;
+          var profileName = document.querySelector('.profile-name');
+          var profileBio = document.querySelector('.profile-bio');
+          if (profileName) profileName.textContent = name;
+          if (profileBio) profileBio.textContent = bio;
+          showToast('Profile updated successfully!');
+        });
+      }
+    })();
+
+    // ==================== PASSWORD FORM ====================
+    (function() {
+      var form = document.getElementById('passwordForm');
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var current = document.getElementById('currentPassword').value;
+          var newPass = document.getElementById('newPassword').value;
+          var confirm = document.getElementById('confirmPassword').value;
+
+          if (!current || !newPass || !confirm) {
+            showToast('Please fill in all password fields.', 'error');
+            return;
+          }
+          if (newPass !== confirm) {
+            showToast('New passwords do not match.', 'error');
+            return;
+          }
+          if (newPass.length < 8) {
+            showToast('Password must be at least 8 characters.', 'error');
+            return;
+          }
+
+          document.getElementById('currentPassword').value = '';
+          document.getElementById('newPassword').value = '';
+          document.getElementById('confirmPassword').value = '';
+          showToast('Password updated successfully!');
+        });
+      }
+    })();
+
+    // ==================== PASSWORD VISIBILITY TOGGLE ====================
+    function togglePasswordVisibility(inputId, btn) {
+      var input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁️';
+      }
+    }
+
+    // ==================== TOGGLE SWITCHES ====================
+    (function() {
+      var toggleSwitches = document.querySelectorAll('#settings-notifications .toggle-switch input');
+      toggleSwitches.forEach(function(toggle) {
+        toggle.addEventListener('change', function() {
+          var label = toggle.closest('.toggle-row').querySelector('.toggle-label');
+          var state = toggle.checked ? 'enabled' : 'disabled';
+          var name = label ? label.textContent : 'Notification';
+          showToast(name + ' ' + state + '!');
+        });
+      });
+    })();
+
+    // ==================== RADIO BUTTONS ====================
+    (function() {
+      var visibilityGroup = document.getElementById('visibilityGroup');
+      if (visibilityGroup) {
+        var radioOptions = visibilityGroup.querySelectorAll('.radio-option');
+        radioOptions.forEach(function(option) {
+          option.addEventListener('click', function() {
+            radioOptions.forEach(function(o) { o.classList.remove('selected'); });
+            option.classList.add('selected');
+            var input = option.querySelector('input[type="radio"]');
+            if (input) input.checked = true;
+            showToast('Profile visibility set to ' + option.textContent.trim() + '!');
+          });
+        });
+      }
+    })();
+
+    // ==================== THEME OPTIONS ====================
+    (function() {
+      var themeOptions = document.querySelectorAll('#themeOptions .theme-option');
+      var currentTheme = localStorage.getItem('ecosphere-theme') || 'dark';
+
+      function updateThemeSelection(theme) {
+        themeOptions.forEach(function(opt) {
+          var choice = opt.getAttribute('data-theme-choice');
+          if (choice === theme) {
+            opt.classList.add('selected');
+          } else {
+            opt.classList.remove('selected');
+          }
+        });
+
+        var label = document.getElementById('themeCurrentLabel');
+        if (label) {
+          var display = theme.charAt(0).toUpperCase() + theme.slice(1);
+          label.textContent = '● Current theme: ' + display;
+        }
+      }
+
+      updateThemeSelection(currentTheme);
+
+      themeOptions.forEach(function(option) {
+        option.addEventListener('click', function() {
+          var theme = option.getAttribute('data-theme-choice');
+          if (theme === 'auto') {
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            theme = prefersDark ? 'dark' : 'light';
+          }
+          document.documentElement.setAttribute('data-theme', theme);
+          localStorage.setItem('ecosphere-theme', theme);
+          updateThemeSelection(theme);
+          updateThemeIcon(theme);
+          showToast('Theme changed to ' + theme + '!');
+        });
+      });
+    })();
+
+    // ==================== TWO-FACTOR TOGGLE ====================
+    (function() {
+      var tfaToggle = document.getElementById('tfaToggle');
+      var tfaStatus = document.getElementById('tfaStatus');
+      if (tfaToggle && tfaStatus) {
+        tfaToggle.addEventListener('change', function() {
+          if (tfaToggle.checked) {
+            tfaStatus.className = 'tfa-status enabled';
+            tfaStatus.textContent = '● Enabled';
+            showToast('Two-factor authentication enabled!');
+          } else {
+            tfaStatus.className = 'tfa-status disabled';
+            tfaStatus.textContent = '● Disabled';
+            showToast('Two-factor authentication disabled.', 'error');
+          }
+        });
+      }
+    })();
+
+    // ==================== DELETE ACCOUNT ====================
+    (function() {
+      var deleteBtn = document.getElementById('deleteAccountBtn');
+      var deleteModal = document.getElementById('deleteModal');
+      var cancelBtn = document.getElementById('deleteCancelBtn');
+      var confirmBtn = document.getElementById('deleteConfirmBtn');
+
+      if (deleteBtn && deleteModal) {
+        deleteBtn.addEventListener('click', function() {
+          deleteModal.classList.add('active');
+        });
+
+        cancelBtn.addEventListener('click', function() {
+          deleteModal.classList.remove('active');
+        });
+
+        deleteModal.addEventListener('click', function(e) {
+          if (e.target === deleteModal) {
+            deleteModal.classList.remove('active');
+          }
+        });
+
+        confirmBtn.addEventListener('click', function() {
+          deleteModal.classList.remove('active');
+          showToast('Account deletion requested. You will receive a confirmation email.', 'error');
+        });
+      }
+    })();
+
+    // ==================== RADIAL PROGRESS ====================
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof drawRadialProgress === 'function') {
+        drawRadialProgress('profileRadial', 78, 100, '#10b981');
+      }
+    });
+
+    // ==================== XP BAR ANIMATION ====================
+    document.addEventListener('DOMContentLoaded', function() {
+      var xpFill = document.querySelector('.xp-bar-fill');
+      if (xpFill) {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              var progress = xpFill.getAttribute('data-progress');
+              setTimeout(function() {
+                xpFill.style.width = progress + '%';
+              }, 300);
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.3 });
+        observer.observe(xpFill);
+      }
+    });
+  </script>
+</body>
+</html>
